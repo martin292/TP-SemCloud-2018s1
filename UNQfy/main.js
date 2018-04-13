@@ -169,6 +169,16 @@ function printTracks(tracks){
   tracks.map(t => console.log(t));
 }
 
+function createPlaylist(args, unqfy){
+  unqfy.addPlaylist(args[0],args.slice(1) , args[1]);
+
+  console.log(unqfy.getPlaylistByName(args[0]));
+}
+
+function showPlaylist(args, unqfy){
+  console.log(unqfy.getPlaylistByName(args[0]));
+}
+
 
 
 
