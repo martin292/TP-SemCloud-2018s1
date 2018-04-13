@@ -108,10 +108,10 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-		let a = this.artists.find((artista) => (artista.name === name));
+		let artist = this.artists.find((artista) => (artista.name === name));
     
-    if(typeof (a) !== "undefined"){
-      return a;
+    if(typeof (artist) !== "undefined"){
+      return artist;
     }else{
       console.log("no hay artista con ese nombre")
     }
@@ -119,7 +119,13 @@ class UNQfy {
 
   //TODO: Actualizar (Buscar el la lista de albunes de los artistas)
   getAlbumByName(name) {
-		return this.getAlbums().find((album) => (album.name === name));
+		let album = this.getAlbums().find((album) => (album.name === name)); 
+    
+    if(typeof (album) !== "undefined"){
+      return album;
+    }else{
+      console.log("no hay album con ese nombre")
+    }
   }
 
   getAlbums(){
@@ -137,7 +143,26 @@ class UNQfy {
 
   //TODO: Actualizar (Buscar en la lista de tracks de los albunes de los artistas)
   getTrackByName(name) {
-		
+    let track = this.getTracks().find((track) => (track.name === name));
+    
+    if(typeof (track) !== "undefined"){
+      return track;
+    }else{
+      console.log("no hay track con ese nombre")
+    }
+  }
+
+  getTracks(){
+    let allTracks = [];
+    let allAlbums = this.getAlbums();
+    
+    for (let i in allAlbums){
+      let tracks = allAlbums[i].tracks;
+      for(let j in tracks){
+        allTracks.push(tracks[j]);  
+      }
+    }
+    return allTracks;
   }
 
   getPlaylistByName(name) {
