@@ -35,7 +35,7 @@ node main.js addTrack 'unNombre' 'unaDuracion' 'unGenero' 'nombreAlbum'
 node main.js searchAllTracksByArtist 'nombreArtista'
 node main.js searchAllTracksByGenre 'genero1' 'genero2' 'generoN'
 
-node main.js searchTracksByName 'nombreTrack'
+node main.js searchTrackByName 'nombreTrack'
 node main.js searchAlbumByName 'nombreAlbum'
 node main.js searchArtistByName 'nombreArtista'
 
@@ -54,14 +54,16 @@ function processArguments(args, unqfy){
     case 'searchAllTracksByArtist': searchAllTracksByArtist(args.slice(1), unqfy); break;
     case 'searchAllTracksByGenre': searchAllTracksByGenre(args.slice(1), unqfy); break;
 
-    case 'searchTracksByName': searchTracksByName(args.slice(1), unqfy); break;
-    case 'searchAlbumByName': searchTracksByName(args.slice(1), unqfy); break;
-    case 'searchArtistByName': searchTracksByName(args.slice(1), unqfy); break;
+    case 'searchTrackByName': searchTrackByName(args.slice(1), unqfy); break;
+    case 'searchAlbumByName': searchAlbumByName(args.slice(1), unqfy); break;
+    case 'searchArtistByName': searchArtistsByName(args.slice(1), unqfy); break;
 
     case 'createPlaylist': createPlaylist(args.slice(1), unqfy); break;
     case 'showPlaylist': showPlaylist(args.slice(1), unqfy); break;
 
     case 'help': showHellp(); break;
+
+    case 'del': del(unqfy); break;
     
     default: defaultMsg(args[0]); break;
   }
@@ -70,6 +72,10 @@ function processArguments(args, unqfy){
 function defaultMsg(arg){
   console.log('El argumento "' + arg + '" no existe.');
 
+}
+
+function del(unqfy){
+  unqfy.del();
 }
 
 function showHellp(){
@@ -82,7 +88,7 @@ function showHellp(){
   console.log('node main.js searchAllTracksByArtist nombreArtista');
   console.log('node main.js searchAllTracksByGenre genero1 genero2 generoN');
   console.log(' ');
-  console.log('node main.js searchTracksByName nombreTrack');
+  console.log('node main.js searchTrackByName nombreTrack');
   console.log('node main.js searchAlbumByName nombreAlbum');
   console.log('node main.js searchArtistByName nombreArtista');
   console.log(' ');
@@ -93,7 +99,7 @@ function showHellp(){
 }
 
 function addArtist(params, unqfy){
-  unqfy.addArtist({name: params[0], year: params[1]});
+  unqfy.addArtist({name: params[0], country: params[1]});
   console.log('Artista ' + unqfy.getArtistByName(params[0]).name + ' agregado.');
 }
 
@@ -110,13 +116,58 @@ function addAlbum(params, unqfy){
 function addTrack(params, unqfy){
   let album = unqfy.getAlbumByName(params[3]);
   if(album !== undefined){
-    unqfy.addTrack(album.name, {name: params[0], duration: params[1], genres: params[2]});
+    unqfy.addTrack(album.name, {name: params[0], duration: params[1], genres: [params[2]]});
     console.log('Track: ' + unqfy.getTrackByName(params[0]).name + ' agregado.');
   }else{
     console.log('El album no existe.');
   }
 }
 
+function searchTrackByName(trackName, unqfy){
+  let track = unqfy.getTrackByName(trackName[0]);
+  if(track !== undefined){
+    console.log('Name: ' + track.name);
+    console.log('Duration: ' + track.duration);
+    console.log('Genre: ' + track.genres);
+  }else{
+    console.log('El track "' + trackName + '" no existe');
+  }
+}
+
+function searchAlbumByName(albumName, unqfy){
+  let album = unqfy.getAlbumByName(albumName[0]);
+  if(album !== undefined){
+    console.log('Name: ' + album.name);
+    console.log('Year: ' + album.year);
+    console.log('Artist: ' + album.artist.name);
+  }else{
+    console.log('El album "' + albumName + '" no existe');
+  }
+}
+
+function searchArtistsByName(artistName, unqfy){
+  let artist = unqfy.getArtistByName(artistName[0]);
+  if(artist !== undefined){
+    console.log('Name: ' + artist.name);
+    console.log('Country: ' + artist.country);
+    console.log('Albums: ' + artist.albums);
+  }else{
+    console.log('El Artista "' + artistName + '" no existe');
+  }
+}
+
+function searchAllTracksByArtist(artistName, unqfy){
+  const artist = unqfy.getArtistByName(artistName[0]);
+  printTracks(unqfy.getTracksMatchingArtist(artist));
+}
+
+function searchAllTracksByGenre(genres, unqfy){
+  printTracks(unqfy.getTracksMatchingGenres(genres));
+}
+
+function printTracks(tracks){
+  tracks.map(t => console.log(t));
+}
 
 
 

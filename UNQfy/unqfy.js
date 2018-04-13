@@ -128,6 +128,12 @@ class UNQfy {
 
   //----
 
+  del(){
+    this.artists = [];
+    this.albums = [];
+    this.tracks = [];
+  }
+
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
   }
