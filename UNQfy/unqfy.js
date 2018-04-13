@@ -42,13 +42,6 @@ class Track{
 	}
 }
 
-// hay q ver si Genero lo ponemos como un objeto
-class Genre{
-  constructor(_name){
-  this.name = _name;
-  }
-};
-
 class PlayList{
   constructor(name){
     this.name = name;
@@ -56,12 +49,19 @@ class PlayList{
   }
 
   duration(){
-    const reducer = (acc, cur) => acc + cur.duration;
-    return this.tracks.reduce(reducer, 0);;
+    const reducer = (acc, cu) => cu.duration + acc;
+    return this.tracks.reduce(reducer, 0);
   }
 
   hasTrack(aTrack){
     return this.tracks.includes(aTrack);
+  }
+
+  checkDuration(maxDuration){
+    if(this.duration() > maxDuration){
+      this.tracks.pop();
+      this.checkDuration(maxDuration);
+    }
   }
 }
 
@@ -91,8 +91,7 @@ class UNQfy {
   }
 
   addArtist(params) {
-		let a = new Artist(params.name, params.country);
-    
+		let a = new Artist(params.name, params.country);    
     this.artists.push(a);
   }
 
@@ -112,43 +111,6 @@ class UNQfy {
     album.tracks.push(track);
   }
 
-  getArtistByName(name) {
-		let artist = this.artists.find((artista) => (artista.name === name));
-    
-    if(typeof (artist) !== "undefined"){
-      return artist;
-    }else{
-      console.log("no hay artista con ese nombre")
-    }
-  }
-
-  
-  getAlbumByName(name) {
-		return this.getAllAlbums().find((album) => (album.name === name));
-    /*
-    if(typeof (album) !== "undefined"){
-      return album;
-    }else{
-      console.log("no hay album con ese nombre")
-    }
-    */
-  }
-
-  /*
-  getAlbums(){
-    let allAlbums = [];
-
-    for (let i in this.artists){
-      let albums = this.artists[i].albums;
-      for(let j in albums){
-        allAlbums.push(albums[j]);  
-      }
-    }
-
-    return allAlbums;
-  }
-  */
-
   getAllAlbums(){
     const reducer = (acc, cu) => cu.albums.concat(acc);
     return this.artists.reduce(reducer, []);
@@ -159,41 +121,17 @@ class UNQfy {
     return this.getAllAlbums().reduce(reducer, []);
   }
 
+  getArtistByName(name) {
+		return this.artists.find((artista) => (artista.name === name));   
+  }
+
+  getAlbumByName(name) {
+		return this.getAllAlbums().find((album) => (album.name === name));
+  }
+
   getTrackByName(name) {
-		return this.getAllTracks().find(track => track.name === name);
-
-    /*
-    let track = this.getTracks().find((track) => (track.name === name));
-    
-    if(typeof (track) !== "undefined"){
-      return track;
-    }else{
-      console.log("no hay track con ese nombre")
-    }
-    */
+		return this.getAllTracks().find(track => track.name === name);    
   }
-
-
-
-
-  /*
-  getTracks(){
-    let allTracks = [];
-    let allAlbums = this.getAlbums();
-    
-    for (let i in allAlbums){
-      let tracks = allAlbums[i].tracks;
-      for(let j in tracks){
-        allTracks.push(tracks[j]);  
-      }
-    }
-    return allTracks;
->>>>>>> 77077e6c1f23cac21c03fa89b9d836ce977fa86f
-  }
-  */
-
-
-
 
   getPlaylistByName(name) {
     return this.playLists.find(p => p.name === name);
@@ -205,9 +143,9 @@ class UNQfy {
     
     ts = ts.filter(t => t.duration < maxDuration);
 
-    //FALTA RANDOMIZAR LA LISTA
-
     playlist.tracks = ts;
+
+    playlist.checkDuration(maxDuration);
 
     this.playLists.push(playlist);
   }
@@ -217,6 +155,7 @@ class UNQfy {
     this.playLists = [];
   }
 
+  //-----------------------------------------
 
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
@@ -225,7 +164,7 @@ class UNQfy {
   static load(filename = 'unqfy.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, Genre, PlayList];
+    const classes = [UNQfy, Artist, Album, Track, PlayList];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }
@@ -233,6 +172,6 @@ class UNQfy {
 
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy, //Artist, Album, Track, Genre, PlayList,
+  UNQfy,
 };
 

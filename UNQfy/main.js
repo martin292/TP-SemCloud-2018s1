@@ -116,7 +116,7 @@ function addAlbum(params, unqfy){
 function addTrack(params, unqfy){
   let album = unqfy.getAlbumByName(params[3]);
   if(album !== undefined){
-    unqfy.addTrack(album.name, {name: params[0], duration: params[1], genres: [params[2]]});
+    unqfy.addTrack(album.name, {name: params[0], duration: parseInt(params[1]), genres: [params[2]]});
     console.log('Track: ' + unqfy.getTrackByName(params[0]).name + ' agregado.');
   }else{
     console.log('El album no existe.');
@@ -170,7 +170,7 @@ function printTracks(tracks){
 }
 
 function createPlaylist(args, unqfy){
-  unqfy.addPlaylist(args[0],args.slice(1) , args[1]);
+  unqfy.addPlaylist(args[0],args.slice(1) , parseInt(args[1]));
 
   console.log(unqfy.getPlaylistByName(args[0]));
 }
