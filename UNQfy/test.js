@@ -28,10 +28,6 @@ describe('Add, remove and filter data', () => {
     unqfy = new libunqfy.UNQfy();
   });
 
-  afterEach(() => {
-    unqfy.restart();
-  });
-
   it('should add an artist', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
 
@@ -62,7 +58,7 @@ describe('Add, remove and filter data', () => {
   it('should get all tracks matching genres', () => {
     createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     createAndAddAlbum(unqfy, 'Guns n\' Roses', 'Appetite for Destruction', 1987);
-    const t0 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle 2', 200, ['rock', 'hard rock', 'movie']);
+    const t0 = createAndAddTrack(unqfy, 'Appetite for Destruction', 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
     const t1 = createAndAddTrack(unqfy, 'Appetite for Destruction', "Sweet Child o' Mine", 500, ['rock', 'hard rock', 'pop', 'movie']);
 
     createAndAddArtist(unqfy, 'Michael Jackson', 'USA');

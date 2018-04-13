@@ -1,12 +1,6 @@
 
 const picklejs = require('picklejs');
 
-let artists = [];
-let albums  = [];
-let tracks  = [];
-
-let playlists = [];
-
 //---------------------------------------
 
 class Artist{	
@@ -58,14 +52,15 @@ class Playlist{
 
 class UNQfy {
 
-  restart(){
-    artists = [];
-    albums = [];
-    tracks = [];
+  constructor(){
+    this.artists = [];
+    this.albums  = [];
+    this.tracks  = [];
+    this.playlists = [];
   }
 
   getTracksMatchingGenres(genres) {
-		return tracks.filter(track => track.matchGenres(genres));
+		return this.tracks.filter(track => track.matchGenres(genres));
   }
 
   getTracksMatchingArtist(artist) {
@@ -81,7 +76,7 @@ class UNQfy {
   }
 
   addArtist(params) {
-		artists.push(new Artist(params.name, params.country));
+		this.artists.push(new Artist(params.name, params.country));
   }
 
   addAlbum(artistName, params) {
@@ -89,7 +84,7 @@ class UNQfy {
 		let artist = this.getArtistByName(artistName);
 		
 		artist.albums.push(album);
-		albums.push(album);
+		this.albums.push(album);
   }
 
   addTrack(albumName, params) {
@@ -97,23 +92,23 @@ class UNQfy {
 		let album = this.getAlbumByName(albumName);
 
 		album.tracks.push(track);
-		tracks.push(track);
+		this.tracks.push(track);
   }
 
   getArtistByName(name) {
-		return artists.find(artist => artist.name === name);
+		return this.artists.find(artist => artist.name === name);
   }
 
   getAlbumByName(name) {
-		return albums.find(album => album.name === name);
+		return this.albums.find(album => album.name === name);
   }
 
   getTrackByName(name) {
-		return tracks.find(track => track.name === name);
+		return this.tracks.find(track => track.name === name);
   }
 
   getPlaylistByName(name) {
-    return playlists.find(playlist => playlist.name === name);
+    return this.playlists.find(playlist => playlist.name === name);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
@@ -126,7 +121,7 @@ class UNQfy {
 
     playlist.tracks = ts;
 
-    playlists.push(playlist);
+    this.playlists.push(playlist);
   }
 
   //----
