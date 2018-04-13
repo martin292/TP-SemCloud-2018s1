@@ -55,9 +55,9 @@ class Playlist{
 class UNQfy {
 
   constructor(){
-    this.artists = [];
-    this.albums  = [];
-    this.tracks  = [];
+    this.artists   = [];
+    this.albums    = [];
+    this.tracks    = [];
     this.playlists = [];
   }
 
