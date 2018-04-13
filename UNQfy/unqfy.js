@@ -80,14 +80,8 @@ class UNQfy {
   }
 
   getTracksMatchingArtist(artist) {
-    const a = artist.albums;    
-    let t = [];
-
-    a.forEach(album => {
-      if(album.tracks.length !== 0)
-        t = t.concat(album.tracks);
-    });
-    return t;
+    const reducer = (acc, cu) => cu.tracks.concat(acc);
+    return artist.albums.reduce(reducer, []);
   }
 
   addArtist(params) {
