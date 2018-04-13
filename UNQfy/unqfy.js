@@ -8,7 +8,12 @@ class Artist{
 		this.name = name;
 		this.country = country;
 		this.albums = [];
-	}
+  }
+  
+  getTracksMatchingGenres(genres){
+    const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
+    return this.albums.reduce(reducer, []);
+  }
 }
 
 class Album{
@@ -17,7 +22,11 @@ class Album{
     this.year = year;
     this.artist = {};
 		this.tracks = [];
-	}
+  }
+  
+  getTracksMatchingGenres(genres){
+    return this.tracks.filter(t => t.matchGenres(genres));
+  }
 }
 
 class Track{
@@ -41,9 +50,8 @@ class Genre{
 };
 
 class PlayList{
-  constructor(_name, _duration){//????
-    this.name = _name;
-    this.duration = _duration;
+  constructor(name){
+    this.name = name;
     this.tracks = [];
   }
 
@@ -68,12 +76,12 @@ class UNQfy {
   //TODO: Actualizar (Buscar en la lista de tracks de los albunes de los artistas)
   getTracksMatchingGenres(genres) {
     // corregir ???????????????????????????????????
-		//return this.tracks.filter(track => track.matchGenres(genres));
+    //return this.tracks.filter(track => track.matchGenres(genres));
+    const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
+    return this.artists.reduce(reducer, []);
   }
 
   getTracksMatchingArtist(artist) {
-    // corregir ????????????????????????????????????
-    /*
     const a = artist.albums;    
     let t = [];
 
@@ -82,7 +90,6 @@ class UNQfy {
         t = t.concat(album.tracks);
     });
     return t;
-    */
   }
 
   addArtist(params) {
@@ -135,25 +142,26 @@ class UNQfy {
     return allAlbums;
   }
 
-  //TODO: Actualizar (Buscar en la lista de tracks de los albunes de los artistas)
+  getAllAlbums(){
+    const reducer = (acc, cu) => cu.albums.concat(acc);
+    return this.artists.reduce(reducer, []);
+  }
+
+  getAllTracks(){
+    const reducer = (acc, cu) => cu.tracks.concat(acc);
+    return this.getAllAlbums().reduce(reducer, []);
+  }
+
   getTrackByName(name) {
-		
+		return this.getAllTracks().find(track => track.name === name);
   }
 
   getPlaylistByName(name) {
-    
+    return this.playLists.find(p => p.name === name);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
-    /* El objeto playlist creado debe soportar (al menos):
-      * una propiedad name (string)
-      * un metodo duration() que retorne la duración de la playlist.
-      * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist
-    */
-
-    // corregir ??????????????????????????????
-    /*
-    let playlist = new Playlist(name);
+    let playlist = new PlayList(name);
     let ts = this.getTracksMatchingGenres(genresToInclude);
     
     ts = ts.filter(t => t.duration < maxDuration);
@@ -162,8 +170,12 @@ class UNQfy {
 
     playlist.tracks = ts;
 
-    this.playlists.push(playlist);
-    */
+    this.playLists.push(playlist);
+  }
+
+  del(){
+    this.artists = [];
+    this.playLists = [];
   }
 
 
@@ -182,6 +194,6 @@ class UNQfy {
 
 // TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy,Artist,Album,Track,Genre,PlayList,
+  UNQfy, //Artist, Album, Track, Genre, PlayList,
 };
 
