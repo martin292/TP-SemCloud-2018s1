@@ -5,7 +5,7 @@ const libunqfy = require('./unqfy');
 
 
 function createAndAddArtist(unqfy, artistName, country) {
-  unqfy.addArtist({ name: artistName, country });
+  unqfy.addArtist({ name: artistName, country: country });
   const artist = unqfy.getArtistByName(artistName);
   return artist;
 }
