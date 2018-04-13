@@ -73,10 +73,8 @@ class UNQfy {
     this.playLists = [];
   }
 
-  //TODO: Actualizar (Buscar en la lista de tracks de los albunes de los artistas)
+
   getTracksMatchingGenres(genres) {
-    // corregir ???????????????????????????????????
-    //return this.tracks.filter(track => track.matchGenres(genres));
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
     return this.artists.reduce(reducer, []);
   }
@@ -115,20 +113,28 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-		let a = this.artists.find((artista) => (artista.name === name));
+		let artist = this.artists.find((artista) => (artista.name === name));
     
-    if(typeof (a) !== "undefined"){
-      return a;
+    if(typeof (artist) !== "undefined"){
+      return artist;
     }else{
       console.log("no hay artista con ese nombre")
     }
   }
 
-  //TODO: Actualizar (Buscar el la lista de albunes de los artistas)
+  
   getAlbumByName(name) {
-		return this.getAlbums().find((album) => (album.name === name));
+		return this.getAllAlbums().find((album) => (album.name === name));
+    /*
+    if(typeof (album) !== "undefined"){
+      return album;
+    }else{
+      console.log("no hay album con ese nombre")
+    }
+    */
   }
 
+  /*
   getAlbums(){
     let allAlbums = [];
 
@@ -141,6 +147,7 @@ class UNQfy {
 
     return allAlbums;
   }
+  */
 
   getAllAlbums(){
     const reducer = (acc, cu) => cu.albums.concat(acc);
@@ -154,7 +161,39 @@ class UNQfy {
 
   getTrackByName(name) {
 		return this.getAllTracks().find(track => track.name === name);
+
+    /*
+    let track = this.getTracks().find((track) => (track.name === name));
+    
+    if(typeof (track) !== "undefined"){
+      return track;
+    }else{
+      console.log("no hay track con ese nombre")
+    }
+    */
   }
+
+
+
+
+  /*
+  getTracks(){
+    let allTracks = [];
+    let allAlbums = this.getAlbums();
+    
+    for (let i in allAlbums){
+      let tracks = allAlbums[i].tracks;
+      for(let j in tracks){
+        allTracks.push(tracks[j]);  
+      }
+    }
+    return allTracks;
+>>>>>>> 77077e6c1f23cac21c03fa89b9d836ce977fa86f
+  }
+  */
+
+
+
 
   getPlaylistByName(name) {
     return this.playLists.find(p => p.name === name);
