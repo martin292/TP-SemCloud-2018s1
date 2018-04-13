@@ -27,10 +27,23 @@ function main() {
   saveUNQfy(unqfy, 'estado');  
 }
 
-//node main.js addArtist 'unNombre' 'unPais'
-//node main.js addAlbum 'unNombre' 'unAño' 'nombreArtista'
-//node main.js addTrack 'unNombre' 'unaDuracion' 'unGenero' 'nombreAlbum'
+/*
+node main.js addArtist 'unNombre' 'unPais'
+node main.js addAlbum 'unNombre' 'unAño' 'nombreArtista'
+node main.js addTrack 'unNombre' 'unaDuracion' 'unGenero' 'nombreAlbum'
 
+node main.js searchAllTracksByArtist 'nombreArtista'
+node main.js searchAllTracksByGenre 'genero1' 'genero2' 'generoN'
+
+node main.js searchTracksByName 'nombreTrack'
+node main.js searchAlbumByName 'nombreAlbum'
+node main.js searchArtistByName 'nombreArtista'
+
+node main.js createPlaylist 'unNombre' 'duracionMaxima' 'genero1' 'genero2' 'generoN'
+node main.js showPlaylist 'nombrePlaylist'
+
+node main.js help
+*/
 
 function processArguments(args, unqfy){
   switch(args[0]){
@@ -47,11 +60,25 @@ function processArguments(args, unqfy){
 
     case 'createPlaylist': createPlaylist(args.slice(1), unqfy); break;
     case 'showPlaylist': showPlaylist(args.slice(1), unqfy); break;
+
+    case 'help': showHellp(); break;
     
-    default: defaultMsg(); break;
+    default: defaultMsg(args[0]); break;
   }
 }
 
+function defaultMsg(arg){
+  console.log('El argumento "' + arg + '" no existe.');
+
+}
+
+function showHellp(){
+  console.log('Help:');
+  console.log('node main.js addArtist unNombre unPais');
+  console.log('node main.js addAlbum unNombre unAño nombreArtista');
+  console.log('node main.js addTrack unNombre unaDuracion unGenero nombreAlbum');
+  console.log('...');
+}
 
 function addArtist(params, unqfy){
   unqfy.addArtist({name: params[0], year: params[1]});
