@@ -56,11 +56,12 @@ class UNQfy {
 
   constructor(){
     this.artists   = [];
-    this.albums    = [];
-    this.tracks    = [];
+    this.albums    = [];//TODO: Eliminar lista
+    this.tracks    = [];//TODO: Eliminar lista
     this.playlists = [];
   }
 
+  //TODO: Actualizar (Buscar en la lista de tracks de los albunes de los artistas)
   getTracksMatchingGenres(genres) {
 		return this.tracks.filter(track => track.matchGenres(genres));
   }
@@ -86,7 +87,7 @@ class UNQfy {
     let album = new Album(params.name, params.year, artist);
 				
 		artist.albums.push(album);
-		this.albums.push(album);
+		this.albums.push(album);//TODO: Eliminar esta linea
   }
 
   addTrack(albumName, params) {
@@ -94,17 +95,19 @@ class UNQfy {
     let track = new Track(params.name, params.duration, params.genres, album);
 		
 		album.tracks.push(track);
-		this.tracks.push(track);
+		this.tracks.push(track);//TODO: Eliminar esta linea
   }
 
   getArtistByName(name) {
 		return this.artists.find(artist => artist.name === name);
   }
 
+  //TODO: Actualizar (Buscar el la lista de albunes de los artistas)
   getAlbumByName(name) {
 		return this.albums.find(album => album.name === name);
   }
 
+  //TODO: Actualizar (Buscar en la lista de tracks de los albunes de los artistas)
   getTrackByName(name) {
 		return this.tracks.find(track => track.name === name);
   }
@@ -130,8 +133,9 @@ class UNQfy {
 
   del(){
     this.artists = [];
-    this.albums = [];
-    this.tracks = [];
+    this.albums = [];//TODO: Eliminar esta linea
+    this.tracks = [];//TODO: Eliminar esta linea
+    this.playlists = [];
   }
 
   save(filename = 'unqfy.json') {
