@@ -12,18 +12,20 @@ class Artist{
 }
 
 class Album{
-	constructor(name, year){
+	constructor(name, year, artist){
 		this.name = name;
-		this.year = year;
+    this.year = year;
+    this.artist = artist;
 		this.tracks = [];
 	}
 }
 
 class Track{
-	constructor(name, duration, genres){
+	constructor(name, duration, genres, album){
 		this.name = name;
 		this.duration = duration;
-		this.genres = genres;	
+    this.genres = genres;
+    this.album = album;
 	}
 
 	matchGenres(genres){
@@ -80,17 +82,17 @@ class UNQfy {
   }
 
   addAlbum(artistName, params) {
-		let album = new Album(params.name, params.year);
-		let artist = this.getArtistByName(artistName);
-		
+    let artist = this.getArtistByName(artistName);
+    let album = new Album(params.name, params.year, artist);
+				
 		artist.albums.push(album);
 		this.albums.push(album);
   }
 
   addTrack(albumName, params) {
-		let track = new Track(params.name, params.duration, params.genres);
-		let album = this.getAlbumByName(albumName);
-
+    let album = this.getAlbumByName(albumName);
+    let track = new Track(params.name, params.duration, params.genres, album);
+		
 		album.tracks.push(track);
 		this.tracks.push(track);
   }
