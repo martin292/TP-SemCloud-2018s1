@@ -26,6 +26,10 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
+# ignore a single file
+estado
+test.json
+
 # node-waf configuration
 .lock-wscript
 
