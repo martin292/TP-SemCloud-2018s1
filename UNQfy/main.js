@@ -74,10 +74,22 @@ function defaultMsg(arg){
 
 function showHellp(){
   console.log('Help:');
+  console.log(' ');
   console.log('node main.js addArtist unNombre unPais');
   console.log('node main.js addAlbum unNombre unAño nombreArtista');
   console.log('node main.js addTrack unNombre unaDuracion unGenero nombreAlbum');
-  console.log('...');
+  console.log(' ');
+  console.log('node main.js searchAllTracksByArtist nombreArtista');
+  console.log('node main.js searchAllTracksByGenre genero1 genero2 generoN');
+  console.log(' ');
+  console.log('node main.js searchTracksByName nombreTrack');
+  console.log('node main.js searchAlbumByName nombreAlbum');
+  console.log('node main.js searchArtistByName nombreArtista');
+  console.log(' ');
+  console.log('node main.js createPlaylist unNombre duracionMaxima genero1 genero2 generoN');
+  console.log('node main.js showPlaylist nombrePlaylist');
+  console.log(' ');
+  console.log('node main.js help');
 }
 
 function addArtist(params, unqfy){
