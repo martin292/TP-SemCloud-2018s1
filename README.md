@@ -1,5 +1,14 @@
 # TP-SemCloud-2018s1
 
+Modelamos una aplicación similar a Spotify, a la cual llamaremos UNQfy.
+
+En UNQfy existe una gran cantidad de temas musicales (tracks)  los cuales siempre pertenecen a un álbum. Un álbum tiene asociado uno o más artistas. Cada track tiene asociado uno o más géneros, que son strings. También existen playlists, que son conjuntos de tracks que pueden pertenecer a diferentes álbumes.
+
+
+# UML del modelo del proyecto
+
+https://drive.google.com/file/d/1Y_57wNZD5lXE54HAxT1daOwOuUfYIAbV/view?usp=sharing
+
 
 **Comandos (_sin comillas_):**
 
