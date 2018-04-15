@@ -17,10 +17,10 @@ class Artist{
 }
 
 class Album{
-	constructor(name, year){
+	constructor(name, year, artist){
 		this.name = name;
     this.year = year;
-    this.artist = {};
+    this.artist = artist;
 		this.tracks = [];
   }
   
@@ -30,11 +30,11 @@ class Album{
 }
 
 class Track{
-	constructor(name, duration, genres){
+	constructor(name, duration, genres, album){
 		this.name = name;
 		this.duration = duration;
     this.genres = genres;
-    this.album = {};
+    this.album = album;
 	}
 
 	matchGenres(genres){
@@ -85,23 +85,20 @@ class UNQfy {
   }
 
   addArtist(params) {
-		let a = new Artist(params.name, params.country);    
-    this.artists.push(a);
+    this.artists.push(new Artist(params.name, params.country));
   }
 
   addAlbum(artistName, params) {
-    let album = new Album(params.name, params.year);
-    let artista = this.getArtistByName(artistName);
+    let artist = this.getArtistByName(artistName);
+    const album = new Album(params.name, params.year, artist);
     
-    album.artist = artista;
-    artista.albums.push(album);
+    artist.albums.push(album);
   }
 
   addTrack(albumName, params) {
-    let track = new Track(params.name, params.duration, params.genres);
-		let album = this.getAlbumByName(albumName);
+    let album = this.getAlbumByName(albumName);
+    const track = new Track(params.name, params.duration, params.genres, album);
 
-    track.album = album;
     album.tracks.push(track);
   }
 
@@ -116,11 +113,11 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-		return this.artists.find((artista) => (artista.name === name));   
+		return this.artists.find(artista => artista.name === name);   
   }
 
   getAlbumByName(name) {
-		return this.getAllAlbums().find((album) => (album.name === name));
+		return this.getAllAlbums().find(album => album.name === name);
   }
 
   getTrackByName(name) {
@@ -133,11 +130,11 @@ class UNQfy {
 
   addPlaylist(name, genresToInclude, maxDuration) {
     let playlist = new PlayList(name);
-    let ts = this.getTracksMatchingGenres(genresToInclude);
+    let tracks = this.getTracksMatchingGenres(genresToInclude);
     
-    ts = ts.filter(t => t.duration < maxDuration);
+    tracks = tracks.filter(t => t.duration < maxDuration);
 
-    playlist.tracks = ts;
+    playlist.tracks = tracks;
 
     playlist.checkDuration(maxDuration);
 
