@@ -113,19 +113,23 @@ class UNQfy {
   }
 
   getArtistByName(name) {
-		return this.artists.find(artista => artista.name === name);   
+    return this.getByName(name, this.artists);   
   }
 
   getAlbumByName(name) {
-		return this.getAllAlbums().find(album => album.name === name);
+    return this.getByName(name, this.getAllAlbums());
   }
 
   getTrackByName(name) {
-		return this.getAllTracks().find(track => track.name === name);    
+    return this.getByName(name, this.getAllTracks());    
   }
 
   getPlaylistByName(name) {
-    return this.playLists.find(p => p.name === name);
+    return this.getByName(name, this.playLists);
+  }
+
+  getByName(name, list){
+    return list.find(element => element.name === name);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
