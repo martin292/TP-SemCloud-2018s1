@@ -119,7 +119,7 @@ function exists(param){
 }
 
 function addAlbum(params, unqfy){
-  let artist = unqfy.getArtistByName(params[2]);
+  const artist = unqfy.getArtistByName(params[2]);
   if(exists(artist)){
     unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
     console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
