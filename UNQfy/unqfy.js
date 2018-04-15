@@ -14,6 +14,13 @@ class Artist{
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
     return this.albums.reduce(reducer, []);
   }
+
+  print(){
+    console.log(' ');
+    console.log('Name: ' + this.name);
+    console.log('Country: ' + this.country);
+    console.log('Albums: ' + this.albums.map(a => a.name));
+  }
 }
 
 class Album{
@@ -27,6 +34,14 @@ class Album{
   getTracksMatchingGenres(genres){
     return this.tracks.filter(t => t.matchGenres(genres));
   }
+
+  print(){
+    console.log(' ');
+    console.log('Name: ' + this.name);
+    console.log('Year: ' + this.year);
+    console.log('Artist: ' + this.artist.name);
+    console.log('Tracks: ' + this.tracks.map(t => t.name));
+  }
 }
 
 class Track{
@@ -39,7 +54,15 @@ class Track{
 
 	matchGenres(genres){
     return this.genres.some(g => genres.includes(g));
-	}
+  }
+  
+  print(){
+    console.log(' ');
+    console.log('Name: ' + this.name);
+    console.log('Duration: ' + this.duration);
+    console.log('Album: ' + this.album.name);
+    console.log('Genre: ' + this.genres);
+  }
 }
 
 class PlayList{
@@ -62,6 +85,12 @@ class PlayList{
       this.tracks.pop();
       this.checkDuration(maxDuration);
     }
+  }
+
+  print(){
+    console.log(' ');
+    console.log('Name: ' + this.name);
+    console.log('Tracks: ' + this.tracks.map(t => t.name));    
   }
 }
 

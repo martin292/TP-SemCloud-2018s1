@@ -19,6 +19,10 @@ function saveUNQfy(unqfy, filename) {
   unqfy.save(filename);
 }
 
+
+//
+
+
 function main() {
   let unqfy = getUNQfy('estado');
 
@@ -26,6 +30,10 @@ function main() {
   
   saveUNQfy(unqfy, 'estado');  
 }
+
+
+//------------------------------------------------------------------------------//
+
 
 /*
 node main.js addArtist 'unNombre' 'unPais'
@@ -48,18 +56,18 @@ node main.js help
 function processArguments(args, unqfy){
   switch(args[0]){
     case 'addArtist': addArtist(args.slice(1), unqfy); break;
-    case 'addAlbum': addAlbum(args.slice(1), unqfy); break;
-    case 'addTrack': addTrack(args.slice(1), unqfy); break;
+    case 'addAlbum' : addAlbum(args.slice(1), unqfy);  break;
+    case 'addTrack' : addTrack(args.slice(1), unqfy);  break;
 
     case 'searchAllTracksByArtist': searchAllTracksByArtist(args.slice(1), unqfy); break;
-    case 'searchAllTracksByGenre': searchAllTracksByGenre(args.slice(1), unqfy); break;
+    case 'searchAllTracksByGenre' : searchAllTracksByGenre(args.slice(1), unqfy);  break;
 
-    case 'searchTrackByName': searchTrackByName(args.slice(1), unqfy); break;
-    case 'searchAlbumByName': searchAlbumByName(args.slice(1), unqfy); break;
+    case 'searchTrackByName' : searchTrackByName(args.slice(1), unqfy);   break;
+    case 'searchAlbumByName' : searchAlbumByName(args.slice(1), unqfy);   break;
     case 'searchArtistByName': searchArtistsByName(args.slice(1), unqfy); break;
 
     case 'createPlaylist': createPlaylist(args.slice(1), unqfy); break;
-    case 'showPlaylist': showPlaylist(args.slice(1), unqfy); break;
+    case 'showPlaylist'  : showPlaylist(args.slice(1), unqfy);   break;
 
     case 'help': showHellp(); break;
 
@@ -71,7 +79,6 @@ function processArguments(args, unqfy){
 
 function defaultMsg(arg){
   console.log('El argumento "' + arg + '" no existe.');
-
 }
 
 function del(unqfy){
@@ -103,9 +110,13 @@ function addArtist(params, unqfy){
   console.log('Artista ' + unqfy.getArtistByName(params[0]).name + ' agregado.');
 }
 
+function exists(param){
+  return param !== undefined;
+}
+
 function addAlbum(params, unqfy){
   let artist = unqfy.getArtistByName(params[2]);
-  if(artist !== undefined){
+  if(exists(artist)){
     unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
     console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
   }else{
@@ -114,8 +125,8 @@ function addAlbum(params, unqfy){
 }
 
 function addTrack(params, unqfy){
-  let album = unqfy.getAlbumByName(params[3]);
-  if(album !== undefined){
+  const album = unqfy.getAlbumByName(params[3]);
+  if(exists(album)){
     unqfy.addTrack(album.name, {name: params[0], duration: parseInt(params[1]), genres: [params[2]]});
     console.log('Track: ' + unqfy.getTrackByName(params[0]).name + ' agregado.');
   }else{
@@ -124,35 +135,29 @@ function addTrack(params, unqfy){
 }
 
 function searchTrackByName(trackName, unqfy){
-  let track = unqfy.getTrackByName(trackName[0]);
-  if(track !== undefined){
-    console.log('Name: ' + track.name);
-    console.log('Duration: ' + track.duration);
-    console.log('Genre: ' + track.genres);
+  const track = unqfy.getTrackByName(trackName[0]);
+  if(exists(track)){
+    track.print();
   }else{
-    console.log('El track "' + trackName + '" no existe');
+    console.log('El track "' + trackName + '" no existe.');
   }
 }
 
 function searchAlbumByName(albumName, unqfy){
-  let album = unqfy.getAlbumByName(albumName[0]);
-  if(album !== undefined){
-    console.log('Name: ' + album.name);
-    console.log('Year: ' + album.year);
-    console.log('Artist: ' + album.artist.name);
+  const album = unqfy.getAlbumByName(albumName[0]);
+  if(exists(album)){
+    album.print();
   }else{
-    console.log('El album "' + albumName + '" no existe');
+    console.log('El album "' + albumName + '" no existe.');
   }
 }
 
 function searchArtistsByName(artistName, unqfy){
-  let artist = unqfy.getArtistByName(artistName[0]);
-  if(artist !== undefined){
-    console.log('Name: ' + artist.name);
-    console.log('Country: ' + artist.country);
-    console.log('Albums: ' + artist.albums);
+  const artist = unqfy.getArtistByName(artistName[0]);
+  if(exists(artist)){
+    artist.print();
   }else{
-    console.log('El Artista "' + artistName + '" no existe');
+    console.log('El Artista "' + artistName + '" no existe.');
   }
 }
 
@@ -166,17 +171,22 @@ function searchAllTracksByGenre(genres, unqfy){
 }
 
 function printTracks(tracks){
-  tracks.map(t => console.log(t));
+  tracks.map(t => t.print());
 }
 
 function createPlaylist(args, unqfy){
   unqfy.addPlaylist(args[0],args.slice(1) , parseInt(args[1]));
 
-  console.log(unqfy.getPlaylistByName(args[0]));
+  console.log('playlist "' + unqfy.getPlaylistByName(args[0]).name + '" creada.');
 }
 
 function showPlaylist(args, unqfy){
-  console.log(unqfy.getPlaylistByName(args[0]));
+  const playlist = unqfy.getPlaylistByName(args[0]);
+  if(exists(playlist)){
+    playlist.print();
+  }else{
+    console.log('La playlist "' + args[0] + '" no existe.');
+  }
 }
 
 
