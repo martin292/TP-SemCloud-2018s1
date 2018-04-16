@@ -191,9 +191,15 @@ function printTracks(tracks){
 }
 
 function createPlaylist(args, unqfy){
-  unqfy.addPlaylist(args[0],args.slice(1) , parseInt(args[1]));
+  const playList = unqfy.getPlaylistByName(args[0]);
 
-  console.log('playlist "' + unqfy.getPlaylistByName(args[0]).name + '" creada.');
+  if(!exists(playList)){
+    unqfy.addPlaylist(args[0],args.slice(1) , parseInt(args[1]));
+
+    console.log('Playlist "' + args[0] + '" creada.');
+  }else{
+    console.log('La playlist "' + args[0] + '" ya existe.');
+  }
 }
 
 function showPlaylist(args, unqfy){
