@@ -120,12 +120,18 @@ function exists(param){
 
 function addAlbum(params, unqfy){
   const artist = unqfy.getArtistByName(params[2]);
-  if(exists(artist)){
-    unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
-    console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
+  const album = unqfy.getAlbumByName(params[0]);
+
+  if(!exists(album)){
+    if(exists(artist)){
+      unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
+      console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
+    }else{
+      console.log('El artista no existe.');
+    }    
   }else{
-    console.log('El artista no existe.');
-  }    
+    console.log('El album ya existe.');
+  }
 }
 
 function addTrack(params, unqfy){
