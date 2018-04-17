@@ -119,34 +119,38 @@ function exists(param){
 }
 
 function addAlbum(params, unqfy){
-  const artist = unqfy.getArtistByName(params[2]);
-  const album = unqfy.getAlbumByName(params[0]);
-
-  if(!exists(album)){
-    if(exists(artist)){
-      unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
-      console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
-    }else{
-      console.log('El artista no existe.');
-    }    
+  if(!exists(unqfy.getAlbumByName(params[0]))){
+    addNewAlbum(params, unqfy);
   }else{
     console.log('El album ya existe.');
   }
 }
 
+function addNewAlbum(params, unqfy){
+  const artist = unqfy.getArtistByName(params[2]);
+  if(exists(artist)){
+    unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
+    console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
+  }else{
+    console.log('El artista no existe.');
+  } 
+}
+
 function addTrack(params, unqfy){
   const album = unqfy.getAlbumByName(params[3]);
-  const track = unqfy.getTrackByName(params[0]);
-
   if(exists(album)){
-    if(!exists(track)){
-      unqfy.addTrack(album.name, {name: params[0], duration: parseInt(params[1]), genres: [params[2]]});
-      console.log('Track: ' + unqfy.getTrackByName(params[0]).name + ' agregado.');
-    }else{
-      console.log('El track ya existe.');
-    }
+    addNewTrack(album.name, params, unqfy);
   }else{
     console.log('El album no existe.');
+  }
+}
+
+function addNewTrack(name, params, unqfy){
+  if(!exists(unqfy.getTrackByName(params[0]))){
+    unqfy.addTrack(name, {name: params[0], duration: parseInt(params[1]), genres: [params[2]]});
+    console.log('Track: ' + unqfy.getTrackByName(params[0]).name + ' agregado.');
+  }else{
+    console.log('El track ya existe.');
   }
 }
 
@@ -194,8 +198,7 @@ function createPlaylist(args, unqfy){
   const playList = unqfy.getPlaylistByName(args[0]);
 
   if(!exists(playList)){
-    unqfy.addPlaylist(args[0],args.slice(1) , parseInt(args[1]));
-
+    unqfy.addPlaylist(args[0], args.slice(1), parseInt(args[1]));
     console.log('Playlist "' + args[0] + '" creada.');
   }else{
     console.log('La playlist "' + args[0] + '" ya existe.');
