@@ -111,7 +111,7 @@ function addArtist(params, unqfy){
     console.log('Artista ' + unqfy.getArtistByName(params[0]).name + ' agregado.');
   }
   catch (e) {
-    console.log('El artista "' + params[0] + '" ya existe.');
+    console.log('El artista: "' + params[0] + '" ya existe.');
   }  
 }
 
@@ -120,11 +120,12 @@ function exists(param){
 }
 
 function addAlbum(params, unqfy){
-  if(!exists(unqfy.getAlbumByName(params[0]))){
+  try {  
     addNewAlbum(params, unqfy);
-  }else{
-    console.log('El album ya existe.');
   }
+  catch (e) {
+    console.log('El album: "' + params[0] + '" ya existe.');
+  }  
 }
 
 function addNewAlbum(params, unqfy){
@@ -133,7 +134,7 @@ function addNewAlbum(params, unqfy){
     unqfy.addAlbum(artist.name, {name: params[0], year: params[1]});
     console.log('Album: ' + unqfy.getAlbumByName(params[0]).name + ' agregado.');
   }else{
-    console.log('El artista no existe.');
+    console.log('El artista: "' + params[2] + '" no existe.');
   } 
 }
 

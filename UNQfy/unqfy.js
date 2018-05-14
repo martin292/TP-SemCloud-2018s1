@@ -133,7 +133,10 @@ class UNQfy {
   addAlbum(artistName, params) {
     let artist = this.getArtistByName(artistName);
     const album = new Album(params.name, params.year, artist);
-    
+
+    if(this.getAllAlbums().includes(this.getAlbumByName(params.name))){
+      throw new Exception("Error"); 
+    }
     artist.albums.push(album);
   }
 
