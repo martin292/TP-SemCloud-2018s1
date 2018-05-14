@@ -144,6 +144,11 @@ class UNQfy {
     let album = this.getAlbumByName(albumName);
     const track = new Track(params.name, params.duration, params.genres, album);
 
+    //album.tracks.push(track);
+
+    if(this.getAllTracks().includes(this.getTrackByName(params.name))){
+      throw new Exception("Error"); 
+    }
     album.tracks.push(track);
   }
 

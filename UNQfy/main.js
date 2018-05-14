@@ -140,11 +140,12 @@ function addNewAlbum(params, unqfy){
 
 function addTrack(params, unqfy){
   const album = unqfy.getAlbumByName(params[3]);
-  if(exists(album)){
+  try {  
     addNewTrack(album.name, params, unqfy);
-  }else{
-    console.log('El album no existe.');
   }
+  catch (e) {
+    console.log('El album: "' + params[3] + '" no existe.');
+  }  
 }
 
 function addNewTrack(name, params, unqfy){
@@ -152,7 +153,7 @@ function addNewTrack(name, params, unqfy){
     unqfy.addTrack(name, {name: params[0], duration: parseInt(params[1]), genres: [params[2]]});
     console.log('Track: ' + unqfy.getTrackByName(params[0]).name + ' agregado.');
   }else{
-    console.log('El track ya existe.');
+    console.log('El track: "' + params[0] + '" ya existe.');
   }
 }
 
