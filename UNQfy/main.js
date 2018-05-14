@@ -106,10 +106,11 @@ function showHellp(){
 }
 
 function addArtist(params, unqfy){
-  if(!exists(unqfy.getArtistByName(params[0]))){
+  try {  
     unqfy.addArtist({name: params[0], country: params[1]});
     console.log('Artista ' + unqfy.getArtistByName(params[0]).name + ' agregado.');
-  }else{
+  }
+  catch (e) {
     console.log('El artista "' + params[0] + '" ya existe.');
   }  
 }

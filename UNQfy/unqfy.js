@@ -94,6 +94,12 @@ class PlayList{
   }
 }
 
+class Exception{
+  constructor(_messagge){
+      this.messagge = _messagge;
+  }
+}
+
 //---------------------------------------
 
 class UNQfy {
@@ -113,8 +119,15 @@ class UNQfy {
     return artist.albums.reduce(reducer, []);
   }
 
+  exists(param){
+      return param !== undefined;
+  }
+
   addArtist(params) {
-    this.artists.push(new Artist(params.name, params.country));
+    if(this.artists.includes(this.getArtistByName(params.name))){
+      throw new Exception("Error"); 
+    }
+      this.artists.push(new Artist(params.name, params.country));
   }
 
   addAlbum(artistName, params) {
