@@ -1,18 +1,6 @@
 
 const picklejs = require('picklejs');
 
-const rp = require('request-promise');
-
-const options = {
-  url: 'https://api.spotify.com/v1/search?q=Queen&type=artist',
-  headers: { Authorization: 'Bearer BQAXJA4WucbHgcJ11Di_0bmIEaJGAJMhnqc_tQsLjg2ebPSKCWYnQPoJ5WSOH2o8f4ZcvnxTzkzmV0X1semlfRneiBoYKtwuEjq8gKKSZtnBaTDXzZNBQnJ-KXi23n6YSdaIcHiUEpstToBb_vao6RzejNsLd6ZTorPObK0X4QBfVhWMiITRwA'},
-  json: true
-};
-
-rp.get(options).then((res) => 
-  console.log(res.artists.items.find((i) => i.name === 'Queen'))
-);
-
 //---------------------------------------
 
 class Artist{	
@@ -117,9 +105,53 @@ class Exception{
 class UNQfy {
   constructor(){
     this.artists = [];
-    this.playLists = [];
+    this.playLists = [];    
   }
 
+  /*
+    access_token:  BQAcPxYTa5qALjREtAR5JlATBZK-wwk3sjJxpLJIboxP-5JVFNLdGOsT28EdLtXW5mFQu2cnE6J6sU_V1-6HRerbSu41UvHH8D3y70woupY7m_ZYKXTvEkn_PBWtZzwTzBKM7tICtzIFPYQxMxEWEWZSV5nlxKHgap9wIxIH_BOWmrtIIp7IDQ
+    refresh_token:  AQBt0-7ROaofvgniKlDCCF2M1YLneTIKP9llA8dl0X4Cxr_Gd3bhHEjSJHpBiGyNY3lQQPyfu1R5K6feyH0D-_AXnHzUBwDYfA_Z0XGjC1iHjrHMQGPrTZ83GdNrwrPAz_E
+  */
+  
+  populateAlbumsForArtist( artistName){
+    const rp = require('request-promise');
+
+    const options = {
+      url: 'https://api.spotify.com/v1/search?q=' + artistName + '&type=artist',
+      headers: { Authorization: 'Bearer BQAcPxYTa5qALjREtAR5JlATBZK-wwk3sjJxpLJIboxP-5JVFNLdGOsT28EdLtXW5mFQu2cnE6J6sU_V1-6HRerbSu41UvHH8D3y70woupY7m_ZYKXTvEkn_PBWtZzwTzBKM7tICtzIFPYQxMxEWEWZSV5nlxKHgap9wIxIH_BOWmrtIIp7IDQ'},
+      json: true
+    };
+    
+    rp.get(options).then((res) => {
+      this.addArtist({name: artistName, country: 'country'});
+      let artist = this.findArtist(res, artistName);
+      this.getAlbums(artist).then((a) => this.addAlbums(a, artistName));
+    });
+  }
+
+  addAlbums(list, name){
+    list.map((album) => this.addAlbum(name, {name: album, year: 0}));
+  }
+
+  findArtist(res, name){
+    return res.artists.items.find((i) => i.name === name);
+  }
+
+  getAlbums(artist){
+    const rp = require('request-promise');
+
+    const options = {
+      url: 'https://api.spotify.com/v1/artists/' + artist.id +'/albums',
+      headers: { Authorization: 'Bearer BQAcPxYTa5qALjREtAR5JlATBZK-wwk3sjJxpLJIboxP-5JVFNLdGOsT28EdLtXW5mFQu2cnE6J6sU_V1-6HRerbSu41UvHH8D3y70woupY7m_ZYKXTvEkn_PBWtZzwTzBKM7tICtzIFPYQxMxEWEWZSV5nlxKHgap9wIxIH_BOWmrtIIp7IDQ'},
+      json: true
+    };
+    
+    return rp.get(options).then((res) => {
+      let albumes = [];
+      res.items.map((album) => albumes.push(album.name));
+      return albumes;
+    });
+  }
 
   getTracksMatchingGenres(genres) {
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
@@ -213,7 +245,7 @@ class UNQfy {
   }
 
   //-----------------------------------------
-
+  
   save(filename = 'unqfy.json') {
     new picklejs.FileSerializer().serialize(filename, this);
   }
@@ -232,3 +264,10 @@ module.exports = {
   UNQfy,
 };
 
+
+//Test Spotify
+/*
+let unq = new UNQfy();
+unq.populateAlbumsForArtist('Queen');
+setTimeout(function(){console.log(unq.artists.find(a => a.name === 'Queen').albums)}, 2000);
+*/
