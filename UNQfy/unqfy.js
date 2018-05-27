@@ -1,6 +1,18 @@
 
 const picklejs = require('picklejs');
 
+const rp = require('request-promise');
+
+const options = {
+  url: 'https://api.spotify.com/v1/search?q=Queen&type=artist',
+  headers: { Authorization: 'Bearer BQAXJA4WucbHgcJ11Di_0bmIEaJGAJMhnqc_tQsLjg2ebPSKCWYnQPoJ5WSOH2o8f4ZcvnxTzkzmV0X1semlfRneiBoYKtwuEjq8gKKSZtnBaTDXzZNBQnJ-KXi23n6YSdaIcHiUEpstToBb_vao6RzejNsLd6ZTorPObK0X4QBfVhWMiITRwA'},
+  json: true
+};
+
+rp.get(options).then((res) => 
+  console.log(res.artists.items.find((i) => i.name === 'Queen'))
+);
+
 //---------------------------------------
 
 class Artist{	
