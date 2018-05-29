@@ -12,8 +12,29 @@ let port = process.env.PORT || 8080;
 
 //------------------------------------------------------------------
 
+const fs = require('fs');
+const unqmod = require('./unqfy');
+
+function getUNQfy(filename) {
+    let unqfy = new unqmod.UNQfy();
+    if (fs.existsSync(filename)) {
+      console.log();
+      unqfy = unqmod.UNQfy.load(filename);
+    }
+    return unqfy;
+  }
+  
+  function saveUNQfy(unqfy, filename) {
+    console.log();
+    unqfy.save(filename);
+  }
+
+//------------------------------------------------------------------
+
+let unqfy = null;
+
 router.use((req, res, next) => {
-    //
+    unqfy = getUNQfy('estado');
     console.log('Request received!');
     next();
 });
@@ -26,6 +47,7 @@ router.get('/testGet', (req, res) => {
 router.post('/testPost/:str', (req, res) => {
     console.log(req.params.str);
     res.json({ message: 'POST Test!' });
+    saveUNQfy(unqfy, 'estado');
 });
 
 
@@ -34,4 +56,4 @@ router.post('/testPost/:str', (req, res) => {
 app.use('/api', router);
 
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('http://localhost:' + port + '/api');
