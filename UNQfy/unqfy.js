@@ -50,6 +50,10 @@ class Track{
 		this.duration = duration;
     this.genres = genres;
     this.album = album;
+    this.lyric = null;
+    this.id = null;
+    this.rp = require('request-promise');
+    this.BASE_URL = 'http://api.musixmatch.com/ws/1.1';
 	}
 
 	matchGenres(genres){
@@ -63,6 +67,41 @@ class Track{
     console.log('Album: ' + this.album.name);
     console.log('Genre: ' + this.genres);
   }
+
+  getLyrics(){
+    this.rp.get(this.getOption()).then((res) => {
+      this.id = res.message.body.track_list[0].track.track_id;
+      this.printLyricks();
+    }).catch((err) => console.log(err));
+  }
+
+  printLyricks(){
+    this.rp.get({
+      uri: this.BASE_URL + '/track.lyrics.get?track_id=' + this.id,
+      qs: {
+          apikey: '487a658c7713a6b3ab5332c9ca488511',
+          track_id: this.id
+      },
+      json: true
+    }).then((res) => {
+      this.lyric = res.message.body.lyrics.lyrics_body;
+      console.log(this.lyric);
+    }).catch((err) => console.log(err));
+  }
+
+  getOption(){
+    return {
+      uri: this.BASE_URL + '/track.search??q_artist=' + this.artistName() + '&q_track=' + this.name + '&page_size=1',
+      qs: {
+          apikey: '487a658c7713a6b3ab5332c9ca488511',
+          q_artist: this.artistName(),
+          q_track: this.name
+      },
+      json: true
+    }
+  }
+
+  artistName(){return this.album.artist.name;}
 }
 
 class PlayList{
@@ -152,6 +191,8 @@ class UNQfy {
       return albumes;
     });
   }
+
+
 
   getTracksMatchingGenres(genres) {
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
@@ -270,4 +311,13 @@ module.exports = {
 let unq = new UNQfy();
 unq.populateAlbumsForArtist('Queen');
 setTimeout(function(){console.log(unq.artists.find(a => a.name === 'Queen').albums)}, 2000);
+*/
+
+//Test MusixMatch
+/*
+let artist = new Artist('Queen', 'england');
+let album = new Album('The works', 0, artist);
+let track = new Track('I want to break free', 0, 'rock', album);
+
+track.getLyrics();
 */
