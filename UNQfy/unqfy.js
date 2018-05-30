@@ -210,7 +210,7 @@ class UNQfy {
 
   addArtist(params) {
     if(this.artists.includes(this.getArtistByName(params.name))){
-      throw new Exception("Error"); 
+      throw new Exception("El artista ya existe"); 
     }
       this.artists.push(new Artist(params.name, params.country));
   }
@@ -220,7 +220,7 @@ class UNQfy {
     const album = new Album(params.name, params.year, artist);
 
     if(this.getAllAlbums().includes(this.getAlbumByName(params.name))){
-      throw new Exception("Error"); 
+      throw new Exception("El album ya existe"); 
     }
     artist.albums.push(album);
   }
@@ -232,7 +232,7 @@ class UNQfy {
     //album.tracks.push(track);
 
     if(this.getAllTracks().includes(this.getTrackByName(params.name))){
-      throw new Exception("Error"); 
+      throw new Exception("El track ya existe"); 
     }
     album.tracks.push(track);
   }
