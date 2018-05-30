@@ -28,7 +28,7 @@ class Album{
 		this.name = name;
     this.year = year;
     this.artist = artist;
-		this.tracks = [];
+    this.tracks = [];
   }
   
   getTracksMatchingGenres(genres){
@@ -251,12 +251,24 @@ class UNQfy {
     return this.getByName(name, this.artists);   
   }
 
+  getArtistById(id){
+    return this.getByID(id, this.artists);
+  }
+
   getAlbumByName(name) {
     return this.getByName(name, this.getAllAlbums());
   }
 
+  getAlbumById(id){
+    return this.getByID(id, this.getAllAlbums());
+  }
+
   getTrackByName(name) {
     return this.getByName(name, this.getAllTracks());    
+  }
+
+  getAlbumById(id){
+    return this.getByID(id, this.getAllTracks());
   }
 
   getPlaylistByName(name) {
@@ -265,6 +277,10 @@ class UNQfy {
 
   getByName(name, list){
     return list.find(element => element.name === name);
+  }
+
+  getByID(id, list){
+    return list.find(element => element.id === id);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
