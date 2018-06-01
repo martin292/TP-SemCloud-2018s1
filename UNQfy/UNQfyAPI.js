@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 
 let router = express.Router();
-let port = process.env.PORT || 8080;
+let port = process.env.PORT || 5000;
 
 //------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ function getUNQfy(filename) {
 
 //------------------------------------------------------------------
 // Manejador de Errores
-
+/*
 function errorHandler(err, req, res, next) {
     console.error(err); // imprimimos el error en consola
     // Chequeamos que tipo de error es y actuamos en consecuencia
@@ -55,7 +55,8 @@ function errorHandler(err, req, res, next) {
     // continua con el manejador de errores por defecto
     next(err);
     }
-}    
+}
+*/ 
 
 //------------------------------------------------------------------
 
@@ -69,23 +70,26 @@ router.use((req, res, next) => {
 
 // POST artistID
 
-router.route('/artists')
-    .post(function (req, res) {
-        unqui.addArtist(req.params.name, req.params.country, req.params.id);
-        saveUNQfy(unqui);
-        res.json({ message: 'Artista creado!' });
-    });
+router.post('/artists', (req, res) => {
+    unqfy.addArtist({name: req.body.name, country: req.body.country});
+    saveUNQfy(unqfy, 'estado');
+    res.json({
+        "id": "0",
+        "name": req.body.name,
+        "country": req.body.country,
+        "albums": []
+     });
+});
 
 // GET artistID
 
-router.route("/artists/:id")
-    .get((req, res)=> {
-        const artist = unqui.getArtistById(parseInt(req.params.id));
-        res.json(artist.toJSON()); 
-        console.log('Artista: ' + artist + 'con id: ' + id);
-    });
+router.get('/artists/:id', (req, res) => {
+    const artist = unqfy.getArtistById(parseInt(req.body.id));
+    res.json(artist.toJSON());
+});
 
-/* lo q estaba
+
+//Test GET y POST
 
 router.get('/testGet', (req, res) => {
     console.log('Hola!');
@@ -97,24 +101,20 @@ router.post('/testPost/:str', (req, res) => {
     res.json({ message: 'POST Test!' });
     saveUNQfy(unqfy, 'estado');
 });
-*/
+
 
 //------------------------------------------------------------------
 
 app.use('/api', router);
 
-    app.use((req, res)=>{
-        res.status(404);
-        res.json({status:404, errorCode: '"RESOURCE_NOT_FOUND"'})
-    });
-    app.use(errorHandler);
+/*
+app.use((req, res) => {
+    res.status(404);
+    res.json({status:404, errorCode: '"RESOURCE_NOT_FOUND"'})
+});
 
-    app.listen(port);
-    console.log('http://localhost:' + port + '/api');
-
-/* lo q estaba
-app.use('/api', router);
+app.use(errorHandler);
+*/
 
 app.listen(port);
 console.log('http://localhost:' + port + '/api');
-*/
