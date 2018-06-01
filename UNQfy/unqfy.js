@@ -209,32 +209,28 @@ class UNQfy {
   }
 
   addArtist(params) {
-    if(this.artists.includes(this.getArtistByName(params.name))){
+    if(this.getArtistByName(params.name) !== undefined){
       throw new Exception("El artista ya existe"); 
     }
-      this.artists.push(new Artist(params.name, params.country));
+    this.artists.push(new Artist(params.name, params.country));
   }
 
   addAlbum(artistName, params) {
-    let artist = this.getArtistByName(artistName);
-    const album = new Album(params.name, params.year, artist);
-
-    if(this.getAllAlbums().includes(this.getAlbumByName(params.name))){
+    if(this.getAlbumByName(params.name) !== undefined){
       throw new Exception("El album ya existe"); 
     }
-    artist.albums.push(album);
+    let artist = this.getArtistByName(artistName);
+    const album = new Album(params.name, params.year, artist);
+    artist.albums.push(album);    
   }
 
   addTrack(albumName, params) {
-    let album = this.getAlbumByName(albumName);
-    const track = new Track(params.name, params.duration, params.genres, album);
-
-    //album.tracks.push(track);
-
-    if(this.getAllTracks().includes(this.getTrackByName(params.name))){
+    if(this.getTrackByName(params.name) !== undefined){
       throw new Exception("El track ya existe"); 
     }
-    album.tracks.push(track);
+    let album = this.getAlbumByName(albumName);
+    const track = new Track(params.name, params.duration, params.genres, album);
+    album.tracks.push(track);   
   }
 
   getAllAlbums(){
