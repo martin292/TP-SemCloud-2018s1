@@ -59,6 +59,8 @@ function processArguments(args, unqfy){
     case 'addAlbum' : addAlbum(args.slice(1), unqfy);  break;
     case 'addTrack' : addTrack(args.slice(1), unqfy);  break;
 
+    case 'removeArtist': removeArtist(args.slice(1), unqfy); break;
+
     case 'searchAllTracksByArtist': searchAllTracksByArtist(args.slice(1), unqfy); break;
     case 'searchAllTracksByGenre' : searchAllTracksByGenre(args.slice(1), unqfy);  break;
 
@@ -112,6 +114,16 @@ function addArtist(params, unqfy){
   }
   catch (e) {
     console.log('El artista: "' + params[0] + '" ya existe.');
+  }  
+}
+
+function removeArtist(params, unqfy){
+  try {  
+    unqfy.removeArtist(params[0]);
+    console.log('Artista ' + unqfy.getArtistByName(params[0]) + ' eliminado.');
+  }
+  catch (e) {
+    console.log('El artista: "' + params[0] + '" no existe.');
   }  
 }
 
