@@ -297,6 +297,10 @@ class UNQfy {
     return list.find(element => element.id === id);
   }
 
+  deleteArtistById(id){
+    this.artists = this.artists.filter(artist => artist.id === id);
+  }
+
   addPlaylist(name, genresToInclude, maxDuration) {
     let playlist = new PlayList(name);
     let tracks = this.getTracksMatchingGenres(genresToInclude);

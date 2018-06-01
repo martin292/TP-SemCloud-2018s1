@@ -68,8 +68,10 @@ router.get('/artists/:id', (req, res) => {
 
 // DELETE artist by ID
 router.delete('/artists/:id', (req, res) => {
-    unqfy.deleteArtistById(parseInt(req.params.id)); //Falta crear la funcion deleteArtistById() en la clase UNQfy
+    unqfy.deleteArtistById(parseInt(req.params.id));
+    unqfy.del();
     res.status(200);
+    res.send('Artista eliminado');
 });
 
 // GET artist by name
