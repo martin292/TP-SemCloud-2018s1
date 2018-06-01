@@ -69,7 +69,7 @@ router.get('/artists/:id', (req, res) => {
 // DELETE artist by ID
 router.delete('/artists/:id', (req, res) => {
     unqfy.deleteArtistById(parseInt(req.params.id));
-    unqfy.del();
+    saveUNQfy(unqfy, 'estado');
     res.status(200);
     res.send('Artista eliminado');
 });

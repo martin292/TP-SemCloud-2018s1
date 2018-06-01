@@ -298,7 +298,7 @@ class UNQfy {
   }
 
   deleteArtistById(id){
-    this.artists = this.artists.filter(artist => artist.id === id);
+    this.artists = this.artists.filter(artist => artist.id !== id);
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
