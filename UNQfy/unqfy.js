@@ -4,10 +4,11 @@ const picklejs = require('picklejs');
 //---------------------------------------
 
 class Artist{	
-	constructor(name, country){
+	constructor(name, country, id){
 		this.name = name;
 		this.country = country;
-		this.albums = [];
+    this.albums = [];
+    this.id = id;
   }
   
   getTracksMatchingGenres(genres){
@@ -24,11 +25,12 @@ class Artist{
 }
 
 class Album{
-	constructor(name, year, artist){
+	constructor(name, year, artist, id){
 		this.name = name;
     this.year = year;
     this.artist = artist;
     this.tracks = [];
+    this.id = id;
   }
   
   getTracksMatchingGenres(genres){
@@ -45,7 +47,7 @@ class Album{
 }
 
 class Track{
-	constructor(name, duration, genres, album){
+	constructor(name, duration, genres, album, id){
 		this.name = name;
 		this.duration = duration;
     this.genres = genres;
@@ -54,6 +56,7 @@ class Track{
     this.id = null;
     this.rp = require('request-promise');
     this.BASE_URL = 'http://api.musixmatch.com/ws/1.1';
+    this.id = id;
 	}
 
 	matchGenres(genres){
@@ -144,7 +147,10 @@ class Exception{
 class UNQfy {
   constructor(){
     this.artists = [];
-    this.playLists = [];    
+    this.playLists = [];
+    this.idArtist = 0;
+    this.idAlbum = 0;
+    this.idTrack = 0;
   }
 
   /*
@@ -212,7 +218,8 @@ class UNQfy {
     if(this.getArtistByName(params.name) !== undefined){
       throw new Exception("El artista ya existe"); 
     }
-    this.artists.push(new Artist(params.name, params.country));
+    this.artists.push(new Artist(params.name, params.country, this.idArtist));
+    this.idArtist++;
   }
 
   removeArtist(params){   
@@ -229,8 +236,9 @@ class UNQfy {
       throw new Exception("El album ya existe"); 
     }
     let artist = this.getArtistByName(artistName);
-    const album = new Album(params.name, params.year, artist);
-    artist.albums.push(album);    
+    const album = new Album(params.name, params.year, artist, this.idAlbum);
+    artist.albums.push(album);
+    this.idAlbum++;
   }
 
   addTrack(albumName, params) {
@@ -238,8 +246,9 @@ class UNQfy {
       throw new Exception("El track ya existe"); 
     }
     let album = this.getAlbumByName(albumName);
-    const track = new Track(params.name, params.duration, params.genres, album);
-    album.tracks.push(track);   
+    const track = new Track(params.name, params.duration, params.genres, album, this.idTrack);
+    album.tracks.push(track);
+    this.idTrack++;
   }
 
   getAllAlbums(){

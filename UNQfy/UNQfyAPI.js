@@ -29,34 +29,6 @@ function getUNQfy(filename) {
     unqfy.save(filename);
   }
 
-//------------------------------------------------------------------
-// Manejador de Errores
-/*
-function errorHandler(err, req, res, next) {
-    console.error(err); // imprimimos el error en consola
-    // Chequeamos que tipo de error es y actuamos en consecuencia
-    if (err instanceof InvalidInputError){
-    res.status(err.status);
-    res.json({status: err.status, errorCode: err.errorCode});
-    } else if (err.type === 'entity.parse.failed'){
-    // body-parser error para JSON invalido
-    res.status(err.status);
-    res.json({status: err.status, errorCode: 'INVALID_JSON'});
-    } else if (err.type === 'El artista ya existe'){
-        res.status(err.status);
-        res.json({status: err.status, errorCode: 'BAD REQUEST'});
-    } else if (err.type === 'El album ya existe'){
-        res.status(err.status);
-        res.json({status: err.status, errorCode: 'BAD REQUEST'});
-
-    } else if (err.type === 'El track ya existe'){
-        res.status(err.status);
-        res.json({status: err.status, errorCode: 'BAD REQUEST'});    
-    // continua con el manejador de errores por defecto
-    next(err);
-    }
-}
-*/ 
 
 //------------------------------------------------------------------
 
@@ -83,14 +55,14 @@ router.post('/artists', (req, res) => {
 
 // GET artist by ID
 router.get('/artists/:id', (req, res) => {
-    const artist = unqfy.getArtistById(req.params.id); //Todavia no funciona, faltan los IDs
+    const artist = unqfy.getArtistById(parseInt(req.params.id)); //Todavia no funciona, faltan los IDs
     res.status(200);
-    res.json(artist.toJSON());
+    res.json(JSON.stringify(artist));
 });
 
 // DELETE artist by ID
 router.delete('/artists/:id', (req, res) => {
-    unqfy.deleteArtistById(req.params.id); //Falta crear la funcion deleteArtistById() en la clase UNQfy
+    unqfy.deleteArtistById(parseInt(req.params.id)); //Falta crear la funcion deleteArtistById() en la clase UNQfy
     res.status(200);
 });
 
