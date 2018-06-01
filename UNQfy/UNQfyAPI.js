@@ -68,40 +68,37 @@ router.use((req, res, next) => {
     next();
 });
 
-// POST artistID
-
+// POST artist
 router.post('/artists', (req, res) => {
-    unqfy.addArtist({name: req.body.name, country: req.body.country});
+    unqfy.addArtist({name: req.body.name, country: req.body.country}); //Falta crear en la clase UNQfy un generador de IDs 
     saveUNQfy(unqfy, 'estado');
+    res.status(200);
     res.json({
         "id": "0",
         "name": req.body.name,
         "country": req.body.country,
         "albums": []
-     });
+    });
 });
 
-// GET artistID
-
+// GET artist by ID
 router.get('/artists/:id', (req, res) => {
-    const artist = unqfy.getArtistById(parseInt(req.body.id));
+    const artist = unqfy.getArtistById(req.params.id); //Todavia no funciona, faltan los IDs
+    res.status(200);
     res.json(artist.toJSON());
 });
 
-
-//Test GET y POST
-
-router.get('/testGet', (req, res) => {
-    console.log('Hola!');
-    res.json({ message: 'GET Test!' });   
+// DELETE artist by ID
+router.delete('/artists/:id', (req, res) => {
+    unqfy.deleteArtistById(req.params.id); //Falta crear la funcion deleteArtistById() en la clase UNQfy
+    res.status(200);
 });
 
-router.post('/testPost/:str', (req, res) => {
-    console.log(req.params.str);
-    res.json({ message: 'POST Test!' });
-    saveUNQfy(unqfy, 'estado');
+// GET artist by name
+router.get('/artists', (req, res) => {
+    res.status(200);
+    res.send(unqfy.getArtistByName(req.query.name));
 });
-
 
 //------------------------------------------------------------------
 
