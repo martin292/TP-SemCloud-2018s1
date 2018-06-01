@@ -42,22 +42,28 @@ router.use((req, res, next) => {
 
 // POST artist
 router.post('/artists', (req, res) => {
-    unqfy.addArtist({name: req.body.name, country: req.body.country}); //Falta crear en la clase UNQfy un generador de IDs 
+    unqfy.addArtist({name: req.body.name, country: req.body.country});
+    const artist = unqfy.getArtistByName(req.body.name);
     saveUNQfy(unqfy, 'estado');
     res.status(200);
     res.json({
-        "id": "0",
-        "name": req.body.name,
-        "country": req.body.country,
-        "albums": []
+        "id": artist.id,
+        "name": artist.name,
+        "country": artist.country,
+        "albums": artist.albums
     });
 });
 
 // GET artist by ID
 router.get('/artists/:id', (req, res) => {
-    const artist = unqfy.getArtistById(parseInt(req.params.id)); //Todavia no funciona, faltan los IDs
+    const artist = unqfy.getArtistById(parseInt(req.params.id));
     res.status(200);
-    res.json(JSON.stringify(artist));
+    res.json({
+        "id": artist.id,
+        "name": artist.name,
+        "country": artist.country,
+        "albums": artist.albums
+    });
 });
 
 // DELETE artist by ID
