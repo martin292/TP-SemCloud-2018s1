@@ -31,7 +31,7 @@ function getUNQfy(filename) {
 
 //------------------------------------------------------------------
 // Manejador de Errores
-
+/*
 function errorHandler(err, req, res, next) {
     console.error(err); // imprimimos el error en consola
     // Chequeamos que tipo de error es y actuamos en consecuencia
@@ -56,7 +56,7 @@ function errorHandler(err, req, res, next) {
     next(err);
     }
 }    
-
+*/
 //------------------------------------------------------------------
 
 let unqfy = null;
@@ -69,21 +69,31 @@ router.use((req, res, next) => {
 
 // POST artistID
 
-router.route('/artists')
-    .post(function (req, res) {
-        unqui.addArtist(req.params.name, req.params.country, req.params.id);
-        saveUNQfy(unqui);
-        res.json({ message: 'Artista creado!' });
-    });
+router.post('/artists', (req, res) => {
+    unqfy.addArtist(req.params.name, req.params.country);
+    saveUNQfy(unqfy);
+    res.json({ message: 'Artista creado!' });
+    console.log('Artista creado');
+});
 
 // GET artistID
 
-router.route("/artists/:id")
-    .get((req, res)=> {
-        const artist = unqui.getArtistById(parseInt(req.params.id));
-        res.json(artist.toJSON()); 
-        console.log('Artista: ' + artist + 'con id: ' + id);
-    });
+router.get('/artists/:id', (req, res) => {
+    const artist = unqfy.getArtistById(parseInt(req.params.id));
+    console.log('Hola!');
+    res.json(artist.toJSON()); 
+    console.log('Artista: ' + artist + 'con id: ' + id);  
+});
+
+// DELETE artistID
+
+router.get('/artists/:id', (req, res) => {
+    const artist = unqfy.getArtistById(parseInt(req.params.id));
+    unqfy.removeArtist(artist.name);
+    saveUNQfy(unqfy);
+    //res.json({ message: 'Artista eliminado!' });
+    console.log('Artista: ' + artist + 'fue eliminado');   
+});
 
 /* lo q estaba
 
@@ -102,15 +112,15 @@ router.post('/testPost/:str', (req, res) => {
 //------------------------------------------------------------------
 
 app.use('/api', router);
-
-    app.use((req, res)=>{
-        res.status(404);
-        res.json({status:404, errorCode: '"RESOURCE_NOT_FOUND"'})
-    });
-    app.use(errorHandler);
-
-    app.listen(port);
-    console.log('http://localhost:' + port + '/api');
+/*
+app.use((req, res)=>{
+    res.status(404);
+    res.json({status:404, errorCode: '"RESOURCE_NOT_FOUND"'})
+});
+    //app.use(errorHandler);
+*/
+app.listen(port);
+console.log('http://localhost:' + port + '/api');
 
 /* lo q estaba
 app.use('/api', router);
