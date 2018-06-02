@@ -124,13 +124,33 @@ router.get('/albums/:id', (req, res) => {
     }    
 });
 
-// DELETE artist by ID
+// DELETE album by ID
 router.delete('/albums/:id', (req, res) => {
     unqfy.deleteAlbumtById(parseInt(req.params.id)); // falta deleteAlbumtById en unqfy
     saveUNQfy(unqfy, 'estado');
     res.status(200);
     res.end();
 });
+
+// GET album by name
+router.get('/albums', (req, res) => {    
+    if(req.query.name){
+        getAlbum(req.query.name, res);
+    }else{
+        res.status(200);
+        res.send(unqfy.getAllAlbums()); // nose si esta bien esto
+    }    
+});
+
+function getAlbum(name, res){
+    let album = unqfy.getAlbumByName(name);
+    if(album !== undefined){
+        res.status(200);
+        res.send(album);
+    }else{
+        res.status(404).json({"errorcode": "RESOURCE_NOT_FOUND"});
+    }    
+}
 
 //------------------------------------------------------------------
 
