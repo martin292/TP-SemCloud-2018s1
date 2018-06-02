@@ -301,6 +301,10 @@ class UNQfy {
     this.artists = this.artists.filter(artist => artist.id !== id);
   }
 
+  deleteAlbumById(id){
+    this.getAlbums = this.getAlbums.filter(album => album.id !== id);
+  }
+
   addPlaylist(name, genresToInclude, maxDuration) {
     let playlist = new PlayList(name);
     let tracks = this.getTracksMatchingGenres(genresToInclude);

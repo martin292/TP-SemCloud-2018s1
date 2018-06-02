@@ -147,7 +147,7 @@ router.get('/albums/:id', (req, res) => {
 
 // DELETE album by ID
 router.delete('/albums/:id', (req, res) => {
-    unqfy.deleteAlbumtById(parseInt(req.params.id)); // falta deleteAlbumtById en unqfy
+    unqfy.deleteAlbumById(parseInt(req.params.id)); // no se si esta bien deleteAlbumtById 
     saveUNQfy(unqfy, 'estado');
     res.status(200);
     res.end();
