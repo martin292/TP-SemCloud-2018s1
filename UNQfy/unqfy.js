@@ -10,6 +10,14 @@ class Artist{
     this.albums = [];
     this.id = id;
   }
+
+  getAlbumByName(name){
+    return this.albums.find(album => album.name === name);
+  }
+
+  deleteAlbum(id){
+    this.albums = this.albums.filter(album => album.id !== id);
+  }
   
   getTracksMatchingGenres(genres){
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
@@ -282,7 +290,7 @@ class UNQfy {
   }
 
   getAlbumById(id){
-    return this.getByID(id, this.getAllTracks());
+    return this.getByID(id, this.getAllAlbums());
   }
 
   getPlaylistByName(name) {
@@ -302,7 +310,7 @@ class UNQfy {
   }
 
   deleteAlbumById(id){
-    this.getAlbums = this.getAlbums.filter(album => album.id !== id);
+    this.artists.map(artist => artist.deleteAlbum(id));
   }
 
   addPlaylist(name, genresToInclude, maxDuration) {
