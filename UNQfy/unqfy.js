@@ -300,6 +300,18 @@ class UNQfy {
     return list.find(element => element.name === name);
   }
 
+  searchArtistByName(name){
+    return this.searchByName(name, this.artists);
+  }
+
+  searchAlbumByName(name){
+    return this.searchByName(name, this.getAllAlbums());
+  }
+
+  searchByName(name, list){
+    return list.find(element => element.name.toLowerCase().indexOf(name) !== -1);
+  }
+
   getByID(id, list){
     return list.find(element => element.id === id);
   }

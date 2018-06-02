@@ -96,10 +96,15 @@ router.get('/artists', (req, res) => {
 });
 
 function getArtist(name, res) {
-    let artist = unqfy.getArtistByName(name);
+    let artist = unqfy.searchArtistByName(name.toLowerCase());
     if (artist !== undefined) {
         res.status(200);
-        res.send(artist);
+        res.send({
+            "id": artist.id,
+            "name": artist.name,
+            "country": artist.country,
+            "albums": artist.albums.map(album => album.name)
+        });
     } else {
         res.status(404).json({ "errorcode": "RESOURCE_NOT_FOUND" });
     }
@@ -173,7 +178,7 @@ router.get('/albums', (req, res) => {
 });
 
 function getAlbum(name, res) {
-    let album = unqfy.getAlbumByName(name);
+    let album = unqfy.searchAlbumByName(name.toLowerCase());
     if (album !== undefined) {
         res.status(200);
         res.send({
