@@ -77,7 +77,11 @@ router.delete('/artists/:id', (req, res) => {
 // GET artist by name
 router.get('/artists', (req, res) => {
     res.status(200);
-    res.send(unqfy.getArtistByName(req.query.name));
+    if(req.query.name){
+        res.send(unqfy.getArtistByName(req.query.name));
+    }else{
+        res.send(unqfy.artists);
+    }    
 });
 
 //------------------------------------------------------------------
