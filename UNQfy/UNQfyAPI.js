@@ -24,10 +24,10 @@ function getUNQfy(filename) {
     return unqfy;
   }
   
-  function saveUNQfy(unqfy, filename) {
+function saveUNQfy(unqfy, filename) {
     console.log();
     unqfy.save(filename);
-  }
+}
 
 
 //------------------------------------------------------------------
@@ -42,6 +42,14 @@ router.use((req, res, next) => {
 
 // POST artist
 router.post('/artists', (req, res) => {
+    if(unqfy.getArtistByName(req.body.name) !== undefined){
+        res.status(409).json({"errorcode": "RESOURCE_ALREADY_EXISTS"});    
+    }else{
+        addArtist(req, res);
+    }    
+});
+
+function addArtist(req, res){
     unqfy.addArtist({name: req.body.name, country: req.body.country});
     const artist = unqfy.getArtistByName(req.body.name);
     saveUNQfy(unqfy, 'estado');
@@ -52,7 +60,7 @@ router.post('/artists', (req, res) => {
         "country": artist.country,
         "albums": artist.albums
     });
-});
+}
 
 // GET artist by ID
 router.get('/artists/:id', (req, res) => {
