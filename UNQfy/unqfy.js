@@ -155,9 +155,9 @@ class UNQfy {
   constructor(){
     this.artists = [];
     this.playLists = [];
-    this.idArtist = 0;
-    this.idAlbum = 0;
-    this.idTrack = 0;
+    this.idArtist = 1;
+    this.idAlbum = 1;
+    this.idTrack = 1;
   }
 
   /*
