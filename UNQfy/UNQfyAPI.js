@@ -124,6 +124,14 @@ router.get('/albums/:id', (req, res) => {
     }    
 });
 
+// DELETE artist by ID
+router.delete('/albums/:id', (req, res) => {
+    unqfy.deleteAlbumtById(parseInt(req.params.id)); // falta deleteAlbumtById en unqfy
+    saveUNQfy(unqfy, 'estado');
+    res.status(200);
+    res.end();
+});
+
 //------------------------------------------------------------------
 
 app.use('/api', router);
