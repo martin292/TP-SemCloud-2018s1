@@ -108,6 +108,24 @@ function getArtist(name, res){
 
 //------------------------------------------------------------------
 
+// GET album by ID
+router.get('/albums/:id', (req, res) => {
+    const album = unqfy.getAlbumById(parseInt(req.params.id));
+    if(album !== undefined){
+        res.status(200);
+        res.json({
+            "id": album.id,
+            "name": album.name,
+            "year": album.year,
+            "tracks": album.tracks
+        });
+    }else{
+        res.status(404).json({"errorcode": "RESOURCE_NOT_FOUND"});
+    }    
+});
+
+//------------------------------------------------------------------
+
 app.use('/api', router);
 
 /*
