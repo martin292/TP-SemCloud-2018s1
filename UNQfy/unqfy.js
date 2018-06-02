@@ -309,7 +309,7 @@ class UNQfy {
   }
 
   searchByName(name, list){
-    return list.find(element => element.name.toLowerCase().indexOf(name) !== -1);
+    return list.filter(element => element.name.toLowerCase().indexOf(name) !== -1);
   }
 
   getByID(id, list){

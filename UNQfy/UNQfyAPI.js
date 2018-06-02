@@ -42,7 +42,7 @@ router.use((req, res, next) => {
 // POST artist
 router.post('/artists', (req, res) => {
     if (unqfy.getArtistByName(req.body.name) !== undefined) {
-        res.status(409).json({ "errorcode": "RESOURCE_ALREADY_EXISTS" });
+        res.status(409).json({ status: 409, errorCode: 'RESOURCE_ALREADY_EXISTS' });
     } else {
         addArtist(req, res);
     }
@@ -66,12 +66,7 @@ router.get('/artists/:id', (req, res) => {
     const artist = unqfy.getArtistById(parseInt(req.params.id));
     if (artist !== undefined) {
         res.status(200);
-        res.json({
-            "id": artist.id,
-            "name": artist.name,
-            "country": artist.country,
-            "albums": artist.albums.map(album => album.name)
-        });
+        res.json(retArtist(artist));
     } else {
         res.status(404).json({ "errorcode": "RESOURCE_NOT_FOUND" });
     }
@@ -91,23 +86,32 @@ router.get('/artists', (req, res) => {
         getArtist(req.query.name, res);
     } else {
         res.status(200);
-        res.send(unqfy.artists.map(artist => artist.name));
+        res.send(retArtists(unqfy.artists));
     }
 });
 
 function getArtist(name, res) {
-    let artist = unqfy.searchArtistByName(name.toLowerCase());
-    if (artist !== undefined) {
+    let artists = unqfy.searchArtistByName(name.toLowerCase());
+    if (artists.length !== 0) {
         res.status(200);
-        res.send({
-            "id": artist.id,
-            "name": artist.name,
-            "country": artist.country,
-            "albums": artist.albums.map(album => album.name)
-        });
+        res.send(retArtists(artists));
     } else {
-        res.status(404).json({ "errorcode": "RESOURCE_NOT_FOUND" });
+        //res.status(404).json({ "errorcode": "RESOURCE_NOT_FOUND" });
+        res.status(200).json([]);
     }
+}
+
+function retArtists(artists){
+    return artists.map(artist => retArtist(artist));
+}
+
+function retArtist(artist){
+    return {
+        "id": artist.id,
+        "name": artist.name,
+        "albums": artist.albums.map(album => retAlbum(album)),
+        "country": artist.country        
+    };
 }
 
 //------------------------------------------------------------------
@@ -124,7 +128,7 @@ router.post('/albums', (req, res) => {
 
 function postAlbum(artist, req, res) {
     if (artist.getAlbumByName(req.body.name) !== undefined) {
-        res.status(409).json({ "errorcode": "RESOURCE_ALREADY_EXISTS" });
+        res.status(409).json( { status: 409, errorCode: 'RESOURCE_ALREADY_EXISTS' });
     } else {
         addAlbum(req, res, artist.name);
     }
@@ -173,24 +177,30 @@ router.get('/albums', (req, res) => {
         getAlbum(req.query.name, res);
     } else {
         res.status(200);
-        res.send(unqfy.getAllAlbums().map(album => album.name));
+        res.send(unqfy.getAllAlbums().map(album => retAlbum(album)));
     }
 });
 
 function getAlbum(name, res) {
-    let album = unqfy.searchAlbumByName(name.toLowerCase());
-    if (album !== undefined) {
+    let albums = unqfy.searchAlbumByName(name.toLowerCase());
+    if (albums !== []) {
         res.status(200);
-        res.send({
-            "name": album.name,
-            "year": album.year,
-            "id": album.id,
-            "tracks": album.tracks,
-            "artist": album.artist.name
-        });
+        res.send(retAlbums(albums));
     } else {
         res.status(404).json({ "errorcode": "RESOURCE_NOT_FOUND" });
     }
+}
+
+function retAlbums(albums){
+    return albums.map(album => retAlbum(album));
+}
+function retAlbum(album){
+    return {
+        "id": album.id,
+        "name": album.name,
+        "year": album.year,
+        "tracks": album.tracks
+    };
 }
 
 //------------------------------------------------------------------
