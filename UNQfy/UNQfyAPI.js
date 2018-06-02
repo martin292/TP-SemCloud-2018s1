@@ -87,14 +87,24 @@ router.delete('/artists/:id', (req, res) => {
 });
 
 // GET artist by name
-router.get('/artists', (req, res) => {
-    res.status(200);
+router.get('/artists', (req, res) => {    
     if(req.query.name){
-        res.send(unqfy.getArtistByName(req.query.name));
+        getArtist(req.query.name, res);
     }else{
+        res.status(200);
         res.send(unqfy.artists);
     }    
 });
+
+function getArtist(name, res){
+    let artist = unqfy.getArtistByName(name);
+    if(artist !== undefined){
+        res.status(200);
+        res.send(artist);
+    }else{
+        res.status(404).json({"errorcode": "RESOURCE_NOT_FOUND"});
+    }    
+}
 
 //------------------------------------------------------------------
 
