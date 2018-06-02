@@ -65,13 +65,17 @@ function addArtist(req, res){
 // GET artist by ID
 router.get('/artists/:id', (req, res) => {
     const artist = unqfy.getArtistById(parseInt(req.params.id));
-    res.status(200);
-    res.json({
-        "id": artist.id,
-        "name": artist.name,
-        "country": artist.country,
-        "albums": artist.albums
-    });
+    if(artist !== undefined){
+        res.status(200);
+        res.json({
+            "id": artist.id,
+            "name": artist.name,
+            "country": artist.country,
+            "albums": artist.albums
+        });
+    }else{
+        res.status(404).json({"errorcode": "RESOURCE_NOT_FOUND"});
+    }    
 });
 
 // DELETE artist by ID
@@ -79,7 +83,7 @@ router.delete('/artists/:id', (req, res) => {
     unqfy.deleteArtistById(parseInt(req.params.id));
     saveUNQfy(unqfy, 'estado');
     res.status(200);
-    res.send('Artista eliminado');
+    res.end();
 });
 
 // GET artist by name
