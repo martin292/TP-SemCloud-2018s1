@@ -29,7 +29,6 @@ function saveUNQfy(unqfy, filename) {
     unqfy.save(filename);
 }
 
-
 //------------------------------------------------------------------
 
 let unqfy = null;
@@ -107,6 +106,28 @@ function getArtist(name, res){
 }
 
 //------------------------------------------------------------------
+
+// POST album
+router.post('/albums', (req, res) => {
+    if(unqfy.getAlbumByName(req.body.name) !== undefined){
+        res.status(409).json({"errorcode": "RESOURCE_ALREADY_EXISTS"});    
+    }else{
+        addAlbum(req, res);
+    }    
+});
+
+function addAlbum(req, res){
+    unqfy.addAlbum({name: req.body.name, year: req.body.year});
+    const album = unqfy.getAlbumByName(req.body.name);
+    saveUNQfy(unqfy, 'estado');
+    res.status(200);
+    res.json({
+        "id": album.id,
+        "name": album.name,
+        "year": album.country,
+        "tracks": album.tracks
+    });
+}
 
 // GET album by ID
 router.get('/albums/:id', (req, res) => {
