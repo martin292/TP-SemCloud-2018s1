@@ -111,7 +111,7 @@ function getArtist(name, res) {
 router.post('/albums', (req, res) => {
     let artist = unqfy.getArtistById(req.body.artistId);
     if (artist === undefined) {
-        res.status(404).json({ "errorcode": "RESOURCE_NOT_FOUND" });
+        res.status(404).json({ "errorcode": "RELATED_RESOURCE_NOT_FOUND" });
     } else {
         postAlbum(artist, req, res);
     }

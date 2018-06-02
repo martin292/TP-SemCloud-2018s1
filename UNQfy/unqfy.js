@@ -61,8 +61,7 @@ class Track{
     this.genres = genres;
     this.album = album;
     this.lyric = null;
-    this.id = null;
-    this.rp = require('request-promise');
+    //this.rp = require('request-promise');
     this.BASE_URL = 'http://api.musixmatch.com/ws/1.1';
     this.id = id;
 	}
