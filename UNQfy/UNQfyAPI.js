@@ -203,6 +203,14 @@ function retAlbum(album){
     };
 }
 
+router.use('/*', (req, res) => {
+    res.status(404).json({
+        status: 404,
+        errorCode: "RESOURCE_NOT_FOUND"
+    });
+});
+
+
 //------------------------------------------------------------------
 
 app.use('/api', router);
