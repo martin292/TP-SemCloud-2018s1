@@ -120,10 +120,10 @@ function addArtist(params, unqfy){
 function removeArtist(params, unqfy){
   try {  
     unqfy.removeArtist(params[0]);
-    console.log('Artista ' + unqfy.getArtistByName(params[0]) + ' eliminado.');
+    console.log('Artista ' + params[0] + ' eliminado.');
   }
   catch (e) {
-    console.log('El artista: "' + params[0] + '" no existe.');
+    console.log('El artista: ' + params[0] + ' no existe.');
   }  
 }
 

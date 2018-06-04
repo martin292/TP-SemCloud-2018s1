@@ -229,13 +229,11 @@ class UNQfy {
     this.idArtist++;
   }
 
-  removeArtist(params){   
-    if(this.artists.includes(this.getArtistByName(params))){
-      console.log(entrooo)
+  removeArtist(params){  
+    if(this.getArtistByName(params) === undefined){
+      throw new Exception("El artista no existe"); 
+    } 
       this.artists = this.artists.filter(a => a.name !== params);
-      return
-    }
-      throw new Exception("El artista: " + params + " no existe"); 
   }
 
   addAlbum(artistName, params) {
