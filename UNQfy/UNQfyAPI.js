@@ -264,13 +264,6 @@ function errorHandler(err, req, res, next) {
 
 app.use('/api', router);
 
-/*
-app.use((req, res) => {
-    res.status(404);
-    res.json({status:404, errorCode: '"RESOURCE_NOT_FOUND"'})
-});
-*/
-
 app.use(errorHandler);
 
 app.listen(port);

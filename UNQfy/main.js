@@ -19,9 +19,7 @@ function saveUNQfy(unqfy, filename) {
   unqfy.save(filename);
 }
 
-
 //
-
 
 function main() {
   let unqfy = getUNQfy('estado');
@@ -31,14 +29,14 @@ function main() {
   saveUNQfy(unqfy, 'estado');  
 }
 
-
 //------------------------------------------------------------------------------//
-
 
 /*
 node main.js addArtist 'unNombre' 'unPais'
 node main.js addAlbum 'unNombre' 'unAño' 'nombreArtista'
 node main.js addTrack 'unNombre' 'unaDuracion' 'unGenero' 'nombreAlbum'
+
+node main.js removeArtist 'nombreArtista'
 
 node main.js searchAllTracksByArtist 'nombreArtista'
 node main.js searchAllTracksByGenre 'genero1' 'genero2' 'generoN'
@@ -93,6 +91,8 @@ function showHellp(){
   console.log('node main.js addArtist unNombre unPais');
   console.log('node main.js addAlbum unNombre unAño nombreArtista');
   console.log('node main.js addTrack unNombre unaDuracion unGenero nombreAlbum');
+  console.log(' ');
+  console.log('node main.js removeArtist nombreArtista')
   console.log(' ');
   console.log('node main.js searchAllTracksByArtist nombreArtista');
   console.log('node main.js searchAllTracksByGenre genero1 genero2 generoN');
@@ -228,10 +228,6 @@ function showPlaylist(args, unqfy){
     console.log('La playlist "' + args[0] + '" no existe.');
   }
 }
-
-
-
-
 
 //--------------------------------------------
 main();

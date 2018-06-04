@@ -205,8 +205,6 @@ class UNQfy {
     });
   }
 
-
-
   getTracksMatchingGenres(genres) {
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
     return this.artists.reduce(reducer, []);
