@@ -1,5 +1,6 @@
 
 const picklejs = require('picklejs');
+const notificacionAPI = require('./notificacionAPI');
 
 //---------------------------------------
 
