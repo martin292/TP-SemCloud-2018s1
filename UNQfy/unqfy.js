@@ -1,5 +1,7 @@
 
 const picklejs = require('picklejs');
+const rp = require('request-promise');
+const notificacionAPI = require('./notificacionAPI');
 
 //---------------------------------------
 
@@ -61,7 +63,6 @@ class Track{
     this.genres = genres;
     this.album = album;
     this.lyric = null;
-    //this.rp = require('request-promise');
     this.BASE_URL = 'http://api.musixmatch.com/ws/1.1';
     this.id = id;
 	}
@@ -79,14 +80,14 @@ class Track{
   }
 
   getLyrics(){
-    this.rp.get(this.getOption()).then((res) => {
+    rp.get(this.getOption()).then((res) => {
       this.id = res.message.body.track_list[0].track.track_id;
       this.printLyricks();
     }).catch((err) => console.log(err));
   }
 
   printLyricks(){
-    this.rp.get({
+    rp.get({
       uri: this.BASE_URL + '/track.lyrics.get?track_id=' + this.id,
       qs: {
           apikey: '487a658c7713a6b3ab5332c9ca488511',
@@ -159,18 +160,11 @@ class UNQfy {
     this.idAlbum = 1;
     this.idTrack = 1;
   }
-
-  /*
-    access_token:  BQAcPxYTa5qALjREtAR5JlATBZK-wwk3sjJxpLJIboxP-5JVFNLdGOsT28EdLtXW5mFQu2cnE6J6sU_V1-6HRerbSu41UvHH8D3y70woupY7m_ZYKXTvEkn_PBWtZzwTzBKM7tICtzIFPYQxMxEWEWZSV5nlxKHgap9wIxIH_BOWmrtIIp7IDQ
-    refresh_token:  AQBt0-7ROaofvgniKlDCCF2M1YLneTIKP9llA8dl0X4Cxr_Gd3bhHEjSJHpBiGyNY3lQQPyfu1R5K6feyH0D-_AXnHzUBwDYfA_Z0XGjC1iHjrHMQGPrTZ83GdNrwrPAz_E
-  */
   
   populateAlbumsForArtist( artistName){
-    const rp = require('request-promise');
-
     const options = {
       url: 'https://api.spotify.com/v1/search?q=' + artistName + '&type=artist',
-      headers: { Authorization: 'Bearer BQAcPxYTa5qALjREtAR5JlATBZK-wwk3sjJxpLJIboxP-5JVFNLdGOsT28EdLtXW5mFQu2cnE6J6sU_V1-6HRerbSu41UvHH8D3y70woupY7m_ZYKXTvEkn_PBWtZzwTzBKM7tICtzIFPYQxMxEWEWZSV5nlxKHgap9wIxIH_BOWmrtIIp7IDQ'},
+      headers: { Authorization: 'Bearer BQCs07CIBqTHU4Xsood58jN-dBcjPX4BO6ju4yKo-2jCLwwe92NYoa6dY_xJyu7D2JbtFdH77HF0s0C9yMkZOiKwr7udOnYg5uWkgoD4erHlqQwB7tZKP7bPXGSMLtAUjtyZZtKDZg7O_cFU8IoPTeIMTH-nK5KNlKc4A1s4-ptofVwDZu3fSQ'},
       json: true
     };
     
@@ -190,11 +184,9 @@ class UNQfy {
   }
 
   getAlbums(artist){
-    const rp = require('request-promise');
-
     const options = {
       url: 'https://api.spotify.com/v1/artists/' + artist.id +'/albums',
-      headers: { Authorization: 'Bearer BQAcPxYTa5qALjREtAR5JlATBZK-wwk3sjJxpLJIboxP-5JVFNLdGOsT28EdLtXW5mFQu2cnE6J6sU_V1-6HRerbSu41UvHH8D3y70woupY7m_ZYKXTvEkn_PBWtZzwTzBKM7tICtzIFPYQxMxEWEWZSV5nlxKHgap9wIxIH_BOWmrtIIp7IDQ'},
+      headers: { Authorization: 'Bearer BQCs07CIBqTHU4Xsood58jN-dBcjPX4BO6ju4yKo-2jCLwwe92NYoa6dY_xJyu7D2JbtFdH77HF0s0C9yMkZOiKwr7udOnYg5uWkgoD4erHlqQwB7tZKP7bPXGSMLtAUjtyZZtKDZg7O_cFU8IoPTeIMTH-nK5KNlKc4A1s4-ptofVwDZu3fSQ'},
       json: true
     };
     

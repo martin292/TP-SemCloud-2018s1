@@ -1,5 +1,3 @@
-
-
 class Artist{	
 	constructor(mail,id){
 		this.mail = mail;
