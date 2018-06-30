@@ -5,6 +5,10 @@ const notificacionAPI = require('./NotificationService/notificacionAPI');
 
 //---------------------------------------
 
+class Observer{
+
+}
+
 class Artist{	
 	constructor(name, country, id){
 		this.name = name;
