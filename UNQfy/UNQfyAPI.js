@@ -84,6 +84,11 @@ router.get('/artists/:id', (req, res) => {
     }
 });
 
+// GET artist ID
+router.get('/artist/:nom', (req, res) => {
+    // Busca el artista por nombre y devuelve su ID.
+});
+
 // DELETE artist by ID
 router.delete('/artists/:id', (req, res) => {
     if(artistExist(parseInt(req.params.id))){

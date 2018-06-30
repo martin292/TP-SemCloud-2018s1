@@ -10,13 +10,9 @@ app.use(bodyParser.json());
 
 
 let router = express.Router();
-let port = process.env.PORT || 5000;
+let port = process.env.PORT || 5001;
 
 //------------------------------------------------------------------
-
-
-
-
 
 
 
@@ -47,7 +43,7 @@ router.get('/subscriptions', (req, res) => {
 
 
 // DELETE /api/subscriptions
-router.delete('/subscriptions/:id', (req, res) => {
+router.delete('/subscriptions', (req, res) => {
        
 });
 

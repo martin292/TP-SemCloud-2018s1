@@ -1,7 +1,7 @@
 
 const picklejs = require('picklejs');
 const rp = require('request-promise');
-const notificacionAPI = require('./notificacionAPI');
+const notificacionAPI = require('./NotificationService/notificacionAPI');
 
 //---------------------------------------
 
