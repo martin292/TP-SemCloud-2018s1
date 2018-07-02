@@ -70,5 +70,24 @@ class Notification{
     emails(name){
         return this.subscriptions.map(sub => sub.email).join();
     }
+
+//----------------------------------------------------
+  
+  save(filename = 'notificacion.json') {
+    new picklejs.FileSerializer().serialize(filename, this);
+  }
+
+  static load(filename = 'notificacion.json') {
+    const fs = new picklejs.FileSerializer();
+    // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
+    const classes = [Notificacion, Subscription];
+    fs.registerClasses(...classes);
+    return fs.load(filename);
+  }
 }
+
+// TODO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
+module.exports = {
+  Notification,
+};
 
