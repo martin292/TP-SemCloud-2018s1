@@ -19,14 +19,14 @@ function getNotificacion(filename) {
     let noti = new notiMod.Notification();
     if (fs.existsSync(filename)) {
         console.log();
-        noti = notiMod.Notificacion.load(filename);
+        noti = notiMod.Notification.load(filename);
     }
     return noti;
 }
 
-function saveNotificacion(notificacion, filename) {
+function saveNotificacion(noti, filename) {
     console.log('Save!');
-    notificacion.save(filename);
+    noti.save(filename);
 }
 
 //------------------------------------------------------------------
@@ -64,7 +64,7 @@ router.post('/notify', (req, res) => {
 
 // GET /api/subscriptions
 router.get('/subscriptions', (req, res) => {
-    saveNotificacion(notificacion, 'Notificaciones');
+    
 });
 
 
