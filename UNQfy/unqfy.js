@@ -6,7 +6,20 @@ const notificacionAPI = require('./NotificationService/notificacionAPI');
 //---------------------------------------
 
 class Observer{
-
+  notify(id, name){
+    const options = {
+      url: 'http://localhost:5001/api/notify',
+      method: 'POST',
+      body: {
+        artistId: id,
+        subject:  'Nuevo Album para artista' + name,
+        message:  'Se ha agregado un album al artista' + name,
+        from:     'UNQfy <UNQfy.notifications@gmail.com>'
+      },
+      json: true
+    };
+    rp(options).then((res) => console.log(res));
+  }
 }
 
 class Artist{	
@@ -15,6 +28,7 @@ class Artist{
 		this.country = country;
     this.albums = [];
     this.id = id;
+    this.observer = new Observer();
   }
 
   getAlbumByName(name){
@@ -29,6 +43,8 @@ class Artist{
     const reducer = (acc, cu) => cu.getTracksMatchingGenres(genres).concat(acc);
     return this.albums.reduce(reducer, []);
   }
+
+  update(){this.observer.notify(this.id, this.name);}
 
   print(){
     console.log(' ');
@@ -176,6 +192,7 @@ class UNQfy {
       this.addArtist({name: artistName, country: 'country'});
       let artist = this.findArtist(res, artistName);
       this.getAlbums(artist).then((a) => this.addAlbums(a, artistName));
+      artist.update();
     });
   }
 
@@ -237,6 +254,7 @@ class UNQfy {
     let artist = this.getArtistByName(artistName);
     const album = new Album(params.name, params.year, artist, this.idAlbum);
     artist.albums.push(album);
+    artist.update();
     this.idAlbum++;
   }
 
