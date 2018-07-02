@@ -1,4 +1,4 @@
-//const unqfyAPI = require('./UNQfy/UNQfyAPI');
+const picklejs = require('picklejs');
 const nodemailer = require('nodemailer');
 
 //---------------------------------------------------
@@ -80,7 +80,7 @@ class Notification{
   static load(filename = 'notificacion.json') {
     const fs = new picklejs.FileSerializer();
     // TODO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [Notificacion, Subscription];
+    const classes = [Notification, Subscription];
     fs.registerClasses(...classes);
     return fs.load(filename);
   }

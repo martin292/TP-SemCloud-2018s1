@@ -16,7 +16,7 @@ const fs = require('fs');
 const notiMod = require('./notificacion');
 
 function getNotificacion(filename) {
-    let noti = new notiMod.Notificacion();
+    let noti = new notiMod.Notification();
     if (fs.existsSync(filename)) {
         console.log();
         noti = notiMod.Notificacion.load(filename);
@@ -24,8 +24,8 @@ function getNotificacion(filename) {
     return noti;
 }
 
-function saveUNQfy(notificacion, filename) {
-    console.log();
+function saveNotificacion(notificacion, filename) {
+    console.log('Save!');
     notificacion.save(filename);
 }
 
@@ -33,7 +33,7 @@ function saveUNQfy(notificacion, filename) {
 let notificacion = null;
 
 router.use((req, res, next) => {
-    notificacion = getNotificacion('estado');
+    notificacion = getNotificacion('Notificaciones');
     console.log('Request received!');
     next();
 });
@@ -64,13 +64,17 @@ router.post('/notify', (req, res) => {
 
 // GET /api/subscriptions
 router.get('/subscriptions', (req, res) => {
-   
+    saveNotificacion(notificacion, 'Notificaciones');
 });
 
 
 // DELETE /api/subscriptions
 router.delete('/subscriptions', (req, res) => {
        
+});
+
+router.use('/*', (req, res) => {
+    res.status(404).json({ status: 404, errorCode: "RESOURCE_NOT_FOUND" });
 });
 
 
