@@ -16,10 +16,10 @@ const fs = require('fs');
 const notiMod = require('./notificacion');
 
 function getNotificacion(filename) {
-    let noti = new notiMod.Notificacion();
+    let noti = new notiMod.Notification();
     if (fs.existsSync(filename)) {
         console.log();
-        noti = notiMod.Notificacion.load(filename);
+        noti = notiMod.Notification.load(filename);
     }
     return noti;
 }
