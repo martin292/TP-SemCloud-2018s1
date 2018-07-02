@@ -23,7 +23,7 @@ class Notification{
             method: 'GET',
             json: true
         };
-        rp.get(options).then((res) => name = res.name);
+        rp(options).then((res) => name = res.name);
         
         return name;
     }
