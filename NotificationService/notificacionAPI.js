@@ -13,13 +13,13 @@ let port = process.env.PORT || 5001;
 //------------------------------------------------------------------
 
 const fs = require('fs');
-const notificacion = require('./notificacion');
+const notiMod = require('./notificacion');
 
 function getNotificacion(filename) {
-    let noti = new notificacion.Notificacion();
+    let noti = new notiMod.Notificacion();
     if (fs.existsSync(filename)) {
         console.log();
-        noti = notificacion.Notificacion.load(filename);
+        noti = notiMod.Notificacion.load(filename);
     }
     return noti;
 }
@@ -30,7 +30,7 @@ function saveUNQfy(notificacion, filename) {
 }
 
 //------------------------------------------------------------------
-let notificacion = new Notification();
+let notificacion = null;
 
 router.use((req, res, next) => {
     notificacion = getNotificacion('estado');
