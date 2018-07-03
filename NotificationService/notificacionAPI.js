@@ -64,13 +64,25 @@ router.post('/notify', (req, res) => {
 
 // GET /api/subscriptions
 router.get('/subscriptions', (req, res) => {
-    
+      let artistId = notificacion.getArtistById(req.body.name);
+      let subscripciones = notificacion.getSubscripciones(artistId);
+      res.status(200);
+      res.json({
+        "id": artist.id,
+        "subscriptors": artist.subscripciones // ?????
+    });
 });
 
 
 // DELETE /api/subscriptions
 router.delete('/subscriptions', (req, res) => {
-       
+    if(!req.body.artistId || req.body.artistId === undefined){
+        res.status(400).json({ status: 400, errorCode: "BAD_REQUEST" });
+    }else{
+        notificacion.deleteSubscripcionesArtista(req.body.artistId);
+        saveNotificacion(notificacion, 'Notificaciones');
+   }
+   res.status(200);
 });
 
 router.use('/*', (req, res) => {

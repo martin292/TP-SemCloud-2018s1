@@ -10,7 +10,7 @@ class Subscription{
     }
 }
 
-class Notification{
+class Notification{ // no deberia ir el id del artista aca????
     constructor(){
         this.subscriptions = [];
         this.rp = require('request-promise');
@@ -28,6 +28,19 @@ class Notification{
         return name;
     }
 
+//nuevo: busca el artista por nombre y devuelve el id ???????
+    getArtistById(name){
+        let idArtist;
+        const options = {
+            url: 'http://localhost:5000/api/artists/' + name,
+            method: 'GET',
+            json: true
+        };
+        rp(options).then((res) => idArtist = res.id);
+        
+        return idArtist;
+    }
+
     addSubscription(name, email){
         let sub = new Subscription(name, email);
         if(!this.subscriptions.includes(sub)){
@@ -37,6 +50,14 @@ class Notification{
 
     removeSubscription(name, email){
         this.subscriptions = this.subscriptions.filter(sub => sub.name !== name && sub.email !== email);
+    }
+
+    getSubscripciones(idArtista){ // no se si esta bien
+        return this.subscriptions.find(artista => artista.id ==  idArtista);
+    }
+
+    deleteSubscripcionesArtista(idArtista){
+        this.subscriptions.find(artista => artista.id ==  idArtista).subscriptions = [];
     }
 
     notify(name, from, message, subject){
