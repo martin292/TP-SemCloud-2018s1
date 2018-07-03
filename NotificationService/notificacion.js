@@ -28,8 +28,8 @@ class Notification{ // no deberia ir el id del artista aca????
         return name;
     }
 
-//nuevo: busca el artista por nombre y devuelve el id ???????
-    getArtistById(name){
+// Busca el artista por nombre y devuelve el id 
+    getArtistId(name){
         let idArtist;
         const options = {
             url: 'http://localhost:5000/api/artists/' + name,
@@ -49,15 +49,23 @@ class Notification{ // no deberia ir el id del artista aca????
     }
 
     removeSubscription(name, email){
-        this.subscriptions = this.subscriptions.filter(sub => sub.name !== name && sub.email !== email);
+        this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== name && sub.email !== email);
     }
 
-    getSubscripciones(idArtista){ // no se si esta bien
-        return this.subscriptions.find(artista => artista.id ==  idArtista);
+    getSubscripciones(idArtista){ 
+        let artistName = getArtistName(idArtista);
+        return this.subscriptions.filter(sub => sub.nameArtist === artistName);
     }
 
     deleteSubscripcionesArtista(idArtista){
-        this.subscriptions.find(artista => artista.id ==  idArtista).subscriptions = [];
+        let artistName = getArtistName(idArtista);
+        this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== artistName);
+    }
+
+    subscriptors(idArtist){
+        let artistName = getArtistName(idArtista);
+        let suscripciones = this.subscriptions.filter(sub => sub.nameArtist === artistName);
+        return suscripciones.map(sub => sub.email).join();
     }
 
     notify(name, from, message, subject){

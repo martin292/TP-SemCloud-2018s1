@@ -64,14 +64,15 @@ router.post('/notify', (req, res) => {
 
 // GET /api/subscriptions
 router.get('/subscriptions', (req, res) => {
-      let artistId = notificacion.getArtistById(req.body.name);
+      let artistId = notificacion.getArtistId(req.body.name);
       let subscripciones = notificacion.getSubscripciones(artistId);
       res.status(200);
       res.json({
-        "id": artist.id,
-        "subscriptors": artist.subscripciones // ?????
+        "id": artistId,
+        "subscriptors": notificacion.subscriptors(artistId) 
     });
 });
+
 
 
 // DELETE /api/subscriptions
