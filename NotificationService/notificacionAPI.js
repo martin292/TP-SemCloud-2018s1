@@ -12,7 +12,6 @@ let port = process.env.PORT || 5001;
 
 let errors = require('./errors');
 let ApiError = errors.APIError;
-let NotFound = errors.ResourceNotFound;
 
 //------------------------------------------------------------------
 
@@ -53,6 +52,10 @@ function errorHandler(err, req, res, next) {
     } 
 }
 
+function throwError(res, e) {
+    res.status(e.status).send(e);
+  }
+
 //------------------------------------------------------------------
 let notificacion = null;
 
@@ -64,24 +67,48 @@ router.use((req, res, next) => {
 
 // POST /api/subscribe
 router.post('/suscribe', (req, res) => {
-      let artist = notificacion.getArtistName(req.body.artistId);
-      notificacion.addSubscription(artist, req.body.email);
+      if(!req.body  || !req.body.email || req.body.artistId === undefined){
+        throwError(res, new BadRequest);
+      }else{
+        try{
+          let artist = notificacion.getArtistName(req.body.artistId);
+          notificacion.addSubscription(artist, req.body.email);
+          saveNotificacion(notificacion, 'Notificaciones');
+        } catch (e){
+            throwError(res, new ResourceAlreadyExist);
+        }
+      }
       res.status(200);
 });
 
 
 // POST /api/unsubscribe
 router.post('/unsuscribe', (req, res) => {
-      let artist = notificacion.getArtistName(req.body.artistId);
-      notificacion.removeSubsciption(artist, req.body.email);
+      if(!req.body  || !req.body.email || req.body.artistId === undefined){
+        throwError(res, new BadRequest);
+      }else {
+          try{
+            let artistName = notificacion.getArtistName(req.body.artistId);  
+            notificacion.removeSubsciption(artistName, req.body.email);
+            saveNotificacion(notificacion, 'Notificaciones');
+          } catch (e) {
+            throwError(res, new ResourceAlreadyExist); 
+          }
+      } 
       res.status(200);
 });
 
 
 // POST /api/notify
 router.post('/notify', (req, res) => {
-      let artist = notificacion.getArtistName(req.body.artistId);
-      notification.notify(artist, req.body.from, req.body.message, req.body.subject);
+      try{
+        let artist = notificacion.getArtistName(req.body.artistId);
+
+        notification.notify(artist, req.body.from, req.body.message, req.body.subject);
+        saveNotificacion(notificacion, 'Notificaciones');
+      } catch (e){
+        throwError(res, new ResourceAlreadyExist); 
+      }
       res.status(200);
 });
 
@@ -98,20 +125,24 @@ router.get('/subscriptions', (req, res) => {
 });
 
 
-
 // DELETE /api/subscriptions
 router.delete('/subscriptions', (req, res) => {
     if(!req.body.artistId || req.body.artistId === undefined){
-        res.status(400).json({ status: 400, errorCode: "BAD_REQUEST" });
+        throwError(res, new BadRequest);
     }else{
-        notificacion.deleteSubscripcionesArtista(req.body.artistId);
-        saveNotificacion(notificacion, 'Notificaciones');
-   }
-   res.status(200);
+        try{
+            notificacion.deleteSubscripcionesArtista(req.body.artistId);
+            saveNotificacion(notificacion, 'Notificaciones');
+        } catch (e){
+            throwError(res, new ResourceAlreadyExist);
+        }     
+    }
+    res.status(200);
 });
 
+
 router.use('/*', (req, res) => {
-    throw new NotFound();
+    throwError(res, new ResourceNotFound);
 });
 
 

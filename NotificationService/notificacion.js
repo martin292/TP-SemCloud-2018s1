@@ -1,5 +1,6 @@
 const picklejs = require('picklejs');
 const nodemailer = require('nodemailer');
+const rp = require('request-promise');
 
 //---------------------------------------------------
 
@@ -10,14 +11,12 @@ class Subscription{
     }
 }
 
-class Notification{ // no deberia ir el id del artista aca????
+class Notification{ 
     constructor(){
         this.subscriptions = [];
-        this.rp = require('request-promise');
+        
     }
 
-
-    //ññññ
     getArtistName(id){
         let name;
         const options = {
