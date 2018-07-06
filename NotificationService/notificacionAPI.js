@@ -101,8 +101,14 @@ router.post('/unsuscribe', (req, res) => {
 
 // POST /api/notify
 router.post('/notify', (req, res) => {
-      let artist = notificacion.getArtistName(req.body.artistId);
-      notification.notify(artist, req.body.from, req.body.message, req.body.subject);
+      try{
+        let artist = notificacion.getArtistName(req.body.artistId);
+
+        notification.notify(artist, req.body.from, req.body.message, req.body.subject);
+        saveNotificacion(notificacion, 'Notificaciones');
+      } catch (e){
+        throwError(res, new ResourceAlreadyExist); 
+      }
       res.status(200);
 });
 
