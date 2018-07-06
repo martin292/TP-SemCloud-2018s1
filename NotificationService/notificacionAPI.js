@@ -67,20 +67,28 @@ router.use((req, res, next) => {
 
 // POST /api/subscribe
 router.post('/suscribe', (req, res) => {
-      let artist = notificacion.getArtistName(req.body.artistId);
-      notificacion.addSubscription(artist, req.body.email);
+      if(!req.body  || !req.body.email || req.body.artistId === undefined){
+        throwError(res, new BadRequest);
+      }else{
+        try{
+          let artist = notificacion.getArtistName(req.body.artistId);
+          notificacion.addSubscription(artist, req.body.email);
+          saveNotificacion(notificacion, 'Notificaciones');
+        } catch (e){
+            throwError(res, new ResourceAlreadyExist);
+        }
+      }
       res.status(200);
 });
 
 
 // POST /api/unsubscribe
 router.post('/unsuscribe', (req, res) => {
-      let artistName = notificacion.getArtistName(req.body.artistId);
-
       if(!req.body  || !req.body.email || req.body.artistId === undefined){
         throwError(res, new BadRequest);
       }else {
           try{
+            let artistName = notificacion.getArtistName(req.body.artistId);  
             notificacion.removeSubsciption(artistName, req.body.email);
             saveNotificacion(notificacion, 'Notificaciones');
           } catch (e) {
