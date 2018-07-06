@@ -16,8 +16,6 @@ class Notification{ // no deberia ir el id del artista aca????
         this.rp = require('request-promise');
     }
 
-
-    //ññññ
     getArtistName(id){
         let name;
         const options = {

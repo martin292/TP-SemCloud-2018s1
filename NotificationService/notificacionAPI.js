@@ -12,7 +12,6 @@ let port = process.env.PORT || 5001;
 
 let errors = require('./errors');
 let ApiError = errors.APIError;
-let NotFound = errors.ResourceNotFound;
 
 //------------------------------------------------------------------
 
@@ -52,6 +51,10 @@ function errorHandler(err, req, res, next) {
         next(err); 
     } 
 }
+
+function throwError(res, e) {
+    res.status(e.status).send(e);
+  }
 
 //------------------------------------------------------------------
 let notificacion = null;
@@ -98,20 +101,24 @@ router.get('/subscriptions', (req, res) => {
 });
 
 
-
 // DELETE /api/subscriptions
 router.delete('/subscriptions', (req, res) => {
     if(!req.body.artistId || req.body.artistId === undefined){
-        res.status(400).json({ status: 400, errorCode: "BAD_REQUEST" });
+        throwError(res, new BadRequest);
     }else{
-        notificacion.deleteSubscripcionesArtista(req.body.artistId);
-        saveNotificacion(notificacion, 'Notificaciones');
-   }
-   res.status(200);
+        try{
+            notificacion.deleteSubscripcionesArtista(req.body.artistId);
+            saveNotificacion(notificacion, 'Notificaciones');
+        } catch (e){
+            throwError(res, new ResourceAlreadyExist);
+        }     
+    }
+    res.status(200);
 });
 
+
 router.use('/*', (req, res) => {
-    throw new NotFound();
+    throwError(res, new ResourceNotFound);
 });
 
 
