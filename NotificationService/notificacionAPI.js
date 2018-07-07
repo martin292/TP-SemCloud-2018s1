@@ -66,8 +66,8 @@ router.use((req, res, next) => {
 router.post('/suscribe', (req, res) => {
     try{
         checkValidJson(req.body);
-        let artist = notificacion.getArtistName(req.body.artistId);
-        notificacion.addSubscription(artist, req.body.email);
+        let artistName = notificacion.getArtistName(req.body.artistId);
+        notificacion.addSubscription(artistName, req.body.email);
         saveNotificacion(notificacion, 'Notificaciones');
         res.status(200);
     } catch (e){
@@ -103,9 +103,9 @@ router.post('/unsuscribe', (req, res) => {
 // POST /api/notify
 router.post('/notify', (req, res) => {
     try{
-        checkJson(req.body, res);
-        let artist = notificacion.getArtistName(req.body.artistId);
-        notification.notify(artist, req.body.from, req.body.message, req.body.subject);
+        checkJson(req.body);
+        let artistName = notificacion.getArtistName(req.body.artistId);
+        notification.notify(artistName, req.body.from, req.body.message, req.body.subject);
         saveNotificacion(notificacion, 'Notificaciones');
         res.status(200);
     } catch (e){
@@ -113,14 +113,14 @@ router.post('/notify', (req, res) => {
     }
 });
 
-function checkJson(body, res){
+function checkJson(body){
     if(!hasProperties(body)){
-        throw(new BadRequest);
+        throw(new errors.BadRequest());
     }
 }
 
 function hasProperties(body) {
-    return body.hasOwnProperty('artistID')
+    return body.hasOwnProperty('artistId')
         && body.hasOwnProperty('from')
         && body.hasOwnProperty('message')
         && body.hasOwnProperty('subject');
@@ -144,7 +144,7 @@ router.get('/subscriptions', (req, res) => {
 
 function checkBody(body){
     if(!body.hasOwnProperty('artistID')){
-        throw(new BadRequest);
+        throw(new errors.BadRequest());
     }
 }
 
