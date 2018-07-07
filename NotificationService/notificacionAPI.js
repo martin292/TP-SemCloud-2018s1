@@ -161,10 +161,13 @@ function checkBody(body){
 router.delete('/subscriptions', (req, res) => {
     try{
         checkBody(req.body);
-        notificacion.deleteSubscripcionesArtista(req.body.artistId);
-        saveNotificacion(notificacion, 'Notificaciones');
-        res.status(200);
-        res.end();
+        notificacion.getArtistName(parseInt(req.body.artistId))
+        .then((name) => {
+            notificacion.subscriptions = notificacion.subscriptions.filter(sub => sub.nameArtist !== name);
+            saveNotificacion(notificacion, 'Notificaciones');
+            res.status(200);
+            res.end();
+        });        
     } catch (e){
         throwError(res, e);
     }

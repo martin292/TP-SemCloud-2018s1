@@ -68,14 +68,6 @@ class Notification{
         return this.subscriptions.filter(sub => sub.nameArtist === artistName);
     }
 
-    deleteSubscripcionesArtista(idArtista){
-        try{
-            this.getArtistName(idArtista).then((name) => {
-                this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== name);
-            });
-        }catch(e){throw e;}        
-    }
-
 /*
     subscriptors(idArtist){
         let artistName = getArtistName(idArtista);
