@@ -36,21 +36,21 @@ function saveNotificacion(noti, filename) {
 
 function errorHandler(err, req, res, next) {
     //console.error(err);
-    if(err instanceof ApiError  ){
+    if(err instanceof ApiError){
         res.status(err.status); 
         res.json({status: err.status, errorCode: err.errorCode});
     } else if (err.type === 'entity.parse.failed'){ 
         res.status(err.status);
-        res.json({status: err.status, errorCode: 'BAD_REQUEST'}); }
-      else {
-        res.status(err.status)
-        res.json({status: 500, errorCode: 'INTERNAL_SERVER_ERROR'})   
+        res.json({status: err.status, errorCode: 'BAD_REQUEST'}); 
+    } else {
+        res.status(err.status);
+        res.json({status: 500, errorCode: 'INTERNAL_SERVER_ERROR'}); 
         next(err); 
     } 
 }
 
 function throwError(res, e) {
-    res.status(e.status).json({ status: e.status, errorCode: e.errorCode }).send(e);
+    res.status(e.status).json({ status: e.status, errorCode: e.errorCode });//.send(e);
 }
 
 //------------------------------------------------------------------
@@ -77,12 +77,12 @@ router.post('/suscribe', (req, res) => {
 
 function checkValidJson(body){
     if(!hasEmailAndArtistID(body)){
-        throw(new BadRequest);
+        throw(new errors.BadRequest());
     }
 }
 
 function hasEmailAndArtistID(body){
-    return body.hasOwnProperty('email') && body.hasOwnProperty('artistID');
+    return body.hasOwnProperty('email') && body.hasOwnProperty('artistId');
 }
 
 
@@ -161,7 +161,7 @@ router.delete('/subscriptions', (req, res) => {
 
 
 router.use('/*', (req, res) => {
-    throwError(res, new ResourceNotFound);
+    throwError(res, new errors.ResourceNotFound());
 });
 
 

@@ -1,6 +1,7 @@
 const picklejs = require('picklejs');
 const nodemailer = require('nodemailer');
 const rp = require('request-promise');
+const errors = require('./errors');
 
 //---------------------------------------------------
 
@@ -24,12 +25,14 @@ class Notification{
             method: 'GET',
             json: true
         };
+        
         rp(options)
-            .then((res) => name = res.name)
-            .catch((error) => {throw error;});
-
+            .then((res) => name = res.name);
+            //.catch((err) => {throw new errors.ResourceNotFound();});
+        if(name === undefined)throw new errors.ResourceNotFound(); //Esto esta MAL! hay que hacer funcionar el catch que esta comentado.
         return name;
     }
+
 
 // Busca el artista por nombre y devuelve el id 
     getArtistId(name){
