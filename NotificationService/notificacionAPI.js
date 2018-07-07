@@ -150,17 +150,13 @@ function checkBody(body){
 
 // DELETE /api/subscriptions
 router.delete('/subscriptions', (req, res) => {
-    if(!req.body.artistId || req.body.artistId === undefined){
-        throwError(res, new BadRequest);
-    }else{
-        try{
-            notificacion.deleteSubscripcionesArtista(req.body.artistId);
-            saveNotificacion(notificacion, 'Notificaciones');
-        } catch (e){
-            throwError(res, new ResourceAlreadyExist);
-        }     
+    try{
+        notificacion.deleteSubscripcionesArtista(req.body.artistId);
+        saveNotificacion(notificacion, 'Notificaciones');
+        res.status(200);
+    } catch (e){
+        throwError(res, e);
     }
-    res.status(200);
 });
 
 
