@@ -66,10 +66,13 @@ router.use((req, res, next) => {
 router.post('/suscribe', (req, res) => {
     try{
         checkValidJson(req.body);
-        let artistName = notificacion.getArtistName(req.body.artistId);
-        notificacion.addSubscription(artistName, req.body.email);
-        saveNotificacion(notificacion, 'Notificaciones');
-        res.status(200);
+        notificacion.getArtistName(parseInt(req.body.artistId))
+        .then((name) => {
+            notificacion.addSubscription(name, req.body.email);
+            saveNotificacion(notificacion, 'Notificaciones');
+            res.status(200);
+            res.end();
+        });        
     } catch (e){
         throwError(res, e);
     }
@@ -90,10 +93,13 @@ function hasEmailAndArtistID(body){
 router.post('/unsuscribe', (req, res) => {
     try{
         checkValidJson(req.body, res);
-        let artistName = notificacion.getArtistName(req.body.artistId);  
-        notificacion.removeSubsciption(artistName, req.body.email);
-        saveNotificacion(notificacion, 'Notificaciones');
-        res.status(200);
+        notificacion.getArtistName(req.body.artistId)
+        .then((name) => {
+            notificacion.removeSubscription(name, req.body.email);
+            saveNotificacion(notificacion, 'Notificaciones');
+            res.status(200);
+            res.end();
+        });        
     } catch (e) {
         throwError(res, e); 
     }
@@ -128,15 +134,18 @@ function hasProperties(body) {
 
 
 // GET /api/subscriptions?artistId=<artistId>
-router.get('/subscriptions/:artistId', (req, res) => {
-    console.log(req.params.artistId);
+router.get('/subscriptions', (req, res) => {
     try{
-        let artistName = notificacion.getArtistName(req.params.artistId);
-        res.status(200);
-        res.json({
-            "artistId": req.body.artistId,
-            "subscriptors": notificacion.emails(artistName)
+        notificacion.getArtistName(req.query.artistId)
+        .then((name) => {
+            res.status(200);
+            res.json({
+                "artistId": req.query.artistId,
+                "subscriptors": notificacion.emails(name)
+            });
+            res.end();
         });
+        
     }catch(e){
         throwError(res, e);
     }
@@ -155,6 +164,7 @@ router.delete('/subscriptions', (req, res) => {
         notificacion.deleteSubscripcionesArtista(req.body.artistId);
         saveNotificacion(notificacion, 'Notificaciones');
         res.status(200);
+        res.end();
     } catch (e){
         throwError(res, e);
     }

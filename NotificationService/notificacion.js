@@ -19,18 +19,21 @@ class Notification{
     }
 
     getArtistName(id) {
-        let name;
+        //let name;
         const options = {
             url: 'http://localhost:5000/api/artists/' + id,
             method: 'GET',
             json: true
         };
-        
-        rp(options)
-            .then((res) => name = res.name);
-            //.catch((err) => {throw new errors.ResourceNotFound();});
-        if(name === undefined)throw new errors.ResourceNotFound(); //Esto esta MAL! hay que hacer funcionar el catch que esta comentado.
-        return name;
+
+        return rp(options)
+            .then((res) => {
+                return res.name;
+            })
+            .catch((e) => { 
+                //console.log(e);
+                throw e;
+            });
     }
 
 
@@ -67,8 +70,9 @@ class Notification{
 
     deleteSubscripcionesArtista(idArtista){
         try{
-            let artistName = this.getArtistName(idArtista);
-            this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== artistName);
+            this.getArtistName(idArtista).then((name) => {
+                this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== name);
+            });
         }catch(e){throw e;}        
     }
 
@@ -109,7 +113,7 @@ class Notification{
     }
 
     emails(name){
-        return this.subscriptions.filter(sub => sub.artistName === name).map(sub => sub.email).join();
+        return this.subscriptions.filter(sub => sub.artistName !== name).map(sub => sub.email).join();
     }
 
 //----------------------------------------------------
