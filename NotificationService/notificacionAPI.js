@@ -128,10 +128,11 @@ function hasProperties(body) {
 
 
 // GET /api/subscriptions
-router.get('/subscriptions', (req, res) => {
+router.get('/subscriptions/:artistId', (req, res) => {
+    console.log('hola');
     try{
         checkBody(body);
-        let artistName = notificacion.getArtistName(req.body.artistId);
+        let artistName = notificacion.getArtistName(req.params.artistId);
         res.status(200);
         res.json({
             "artistId": req.body.artistId,
@@ -143,7 +144,7 @@ router.get('/subscriptions', (req, res) => {
 });
 
 function checkBody(body){
-    if(!body.hasOwnProperty('artistID')){
+    if(!body.hasOwnProperty('artistId')){
         throw(new errors.BadRequest());
     }
 }
@@ -151,6 +152,7 @@ function checkBody(body){
 // DELETE /api/subscriptions
 router.delete('/subscriptions', (req, res) => {
     try{
+        checkBody(req.body);
         notificacion.deleteSubscripcionesArtista(req.body.artistId);
         saveNotificacion(notificacion, 'Notificaciones');
         res.status(200);
