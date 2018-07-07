@@ -127,11 +127,10 @@ function hasProperties(body) {
 }
 
 
-// GET /api/subscriptions
+// GET /api/subscriptions?artistId=<artistId>
 router.get('/subscriptions/:artistId', (req, res) => {
-    console.log('hola');
+    console.log(req.params.artistId);
     try{
-        checkBody(body);
         let artistName = notificacion.getArtistName(req.params.artistId);
         res.status(200);
         res.json({

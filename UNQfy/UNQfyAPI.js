@@ -85,15 +85,14 @@ router.get('/artists/:id', (req, res) => {
 });
 
 // GET artist ID
-router.get('/artist/:nom', (req, res) => {
+router.get('/artist/:name', (req, res) => {
     // Busca el artista por nombre y devuelve su ID.
     const artist = unqfy.getArtistByName(req.params.name);
-    if (artist !== undefined) {
-        res.status(200);
-        res.json(retArtist(artist));// ??? res.json(retArtist(artist).id);
-    } else {
+    if (artist === undefined) {
         res.status(404).json({ status: 404, errorCode: "RESOURCE_NOT_FOUND" });
     }
+    res.status(200);
+    res.json({"artistId":artist.id});
 });
 
 // DELETE artist by ID

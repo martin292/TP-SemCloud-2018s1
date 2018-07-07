@@ -35,6 +35,7 @@ class Notification{
 
 
 // Busca el artista por nombre y devuelve el id 
+/*
     getArtistId(name){
         let idArtist;
         const options = {
@@ -46,6 +47,7 @@ class Notification{
         
         return idArtist;
     }
+*/
 
     addSubscription(name, email){
         let sub = new Subscription(name, email);
@@ -64,15 +66,19 @@ class Notification{
     }
 
     deleteSubscripcionesArtista(idArtista){
-        let artistName = getArtistName(idArtista);
-        this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== artistName);
+        try{
+            let artistName = this.getArtistName(idArtista);
+            this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== artistName);
+        }catch(e){throw e;}        
     }
 
+/*
     subscriptors(idArtist){
         let artistName = getArtistName(idArtista);
         let suscripciones = this.subscriptions.filter(sub => sub.nameArtist === artistName);
         return suscripciones.map(sub => sub.email).join();
     }
+*/
 
     notify(name, from, message, subject){
         const transporter = nodemailer.createTransport({
