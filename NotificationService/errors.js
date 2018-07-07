@@ -3,7 +3,8 @@ class APIError extends Error {
         super(message || name);   
         this.name = name;   
         this.status = statusCode;   
-        this.errorCode = errorCode; } 
+        this.errorCode = errorCode; 
+    } 
 }
 
 

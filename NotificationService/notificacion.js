@@ -17,15 +17,17 @@ class Notification{
         
     }
 
-    getArtistName(id){
+    getArtistName(id) {
         let name;
         const options = {
             url: 'http://localhost:5000/api/artists/' + id,
             method: 'GET',
             json: true
         };
-        rp(options).then((res) => name = res.name);
-        
+        rp(options)
+            .then((res) => name = res.name)
+            .catch((error) => {throw error;});
+
         return name;
     }
 
@@ -90,7 +92,7 @@ class Notification{
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log(error);
+                throw(new InternalServerError);
             } else {
                 console.log(info);
             }
@@ -98,7 +100,7 @@ class Notification{
     }
 
     emails(name){
-        return this.subscriptions.map(sub => sub.email).join();
+        return this.subscriptions.filter(sub => sub.artistName === name).map(sub => sub.email).join();
     }
 
 //----------------------------------------------------

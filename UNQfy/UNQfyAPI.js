@@ -260,7 +260,8 @@ router.use('/*', (req, res) => {
 
 //------------------------------------------------------------------
 
-function errorHandler(err, req, res, next) {    
+function errorHandler(err, req, res, next) {
+    console.log(err);
     if (err instanceof InvalidInputError){
         res.status(err.status);
         res.json({status: err.status, errorCode: err.errorCode});
