@@ -10,16 +10,18 @@ class Subscription{
         this.nameArtist = nameArtist;
         this.email = email;
     }
+
+    compare(name, email){
+        return (this.nameArtist === name && this.email === email);
+    }
 }
 
 class Notification{ 
     constructor(){
         this.subscriptions = [];
-        
     }
 
     getArtistName(id) {
-        //let name;
         const options = {
             url: 'http://localhost:5000/api/artists/' + id,
             method: 'GET',
@@ -60,7 +62,7 @@ class Notification{
     }
 
     removeSubscription(name, email){
-        this.subscriptions = this.subscriptions.filter(sub => sub.nameArtist !== name && sub.email !== email);
+        this.subscriptions = this.subscriptions.filter(sub => !sub.compare(name, email));
     }
 
     getSubscripciones(idArtista){ 
@@ -105,7 +107,7 @@ class Notification{
     }
 
     emails(name){
-        return this.subscriptions.filter(sub => sub.artistName !== name).map(sub => sub.email).join();
+        return this.subscriptions.filter(sub => sub.nameArtist === name).map(sub => sub.email).join();
     }
 
 //----------------------------------------------------

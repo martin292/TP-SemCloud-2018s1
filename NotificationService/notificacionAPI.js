@@ -110,10 +110,13 @@ router.post('/unsuscribe', (req, res) => {
 router.post('/notify', (req, res) => {
     try{
         checkJson(req.body);
-        let artistName = notificacion.getArtistName(req.body.artistId);
-        notification.notify(artistName, req.body.from, req.body.message, req.body.subject);
-        saveNotificacion(notificacion, 'Notificaciones');
-        res.status(200);
+        notificacion.getArtistName(req.body.artistId)
+        .then((name) => {
+            notification.notify(artistName, req.body.from, req.body.message, req.body.subject);
+            saveNotificacion(notificacion, 'Notificaciones');
+            res.status(200);
+            res.end();
+        });        
     } catch (e){
         throwError(res, e); 
     }
@@ -144,8 +147,7 @@ router.get('/subscriptions', (req, res) => {
                 "subscriptors": notificacion.emails(name)
             });
             res.end();
-        });
-        
+        });        
     }catch(e){
         throwError(res, e);
     }
