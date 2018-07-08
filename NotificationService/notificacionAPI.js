@@ -35,7 +35,6 @@ function saveNotificacion(noti, filename) {
 //------------------------------------------------------------------
 
 function errorHandler(err, req, res, next) {
-    //console.error(err);
     if(err instanceof ApiError){
         res.status(err.status); 
         res.json({status: err.status, errorCode: err.errorCode});
@@ -112,11 +111,11 @@ router.post('/notify', (req, res) => {
         checkJson(req.body);
         notificacion.getArtistName(req.body.artistId)
         .then((name) => {
-            notification.notify(artistName, req.body.from, req.body.message, req.body.subject);
+            notificacion.notify(name, req.body.from, req.body.message, req.body.subject);
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        });        
+        });
     } catch (e){
         throwError(res, e); 
     }

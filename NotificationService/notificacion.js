@@ -1,7 +1,7 @@
 const picklejs = require('picklejs');
 const nodemailer = require('nodemailer');
 const rp = require('request-promise');
-const errors = require('./errors');
+//const errors = require('./errors');
 
 //---------------------------------------------------
 
@@ -29,30 +29,9 @@ class Notification{
         };
 
         return rp(options)
-            .then((res) => {
-                return res.name;
-            })
-            .catch((e) => { 
-                //console.log(e);
-                throw e;
-            });
+            .then((res) => { return res.name; })
+            .catch((e) => { throw e; });
     }
-
-
-// Busca el artista por nombre y devuelve el id 
-/*
-    getArtistId(name){
-        let idArtist;
-        const options = {
-            url: 'http://localhost:5000/api/artists/' + name,
-            method: 'GET',
-            json: true
-        };
-        rp(options).then((res) => idArtist = res.id);
-        
-        return idArtist;
-    }
-*/
 
     addSubscription(name, email){
         let sub = new Subscription(name, email);
@@ -70,36 +49,29 @@ class Notification{
         return this.subscriptions.filter(sub => sub.nameArtist === artistName);
     }
 
-/*
-    subscriptors(idArtist){
-        let artistName = getArtistName(idArtista);
-        let suscripciones = this.subscriptions.filter(sub => sub.nameArtist === artistName);
-        return suscripciones.map(sub => sub.email).join();
-    }
-*/
 
     notify(name, from, message, subject){
         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com', // server para enviar mail desde gmail
+            host: 'smtp.gmail.com',
             port: 587,
-            secure: false, // true for 465, false for other ports
+            secure: false,
             auth: {
-                user: '<suCuentaDeGmail>',
-                pass: '<suPasswordEnTextoPlano>',
+                user: 'tu.email@gmail.com',
+                pass: 'pass',
             },
         });
 
         const mailOptions = {
-            from: from, // sender address
-            to: this.emails(name), // list of receivers
-            subject: subject , // Subject line
-            text: message, // plain text body
-            html: '<b>Hello</b>' // html body
+            from: from,
+            to: this.emails(name),
+            subject: subject , 
+            text: message,
+            html: '<b>Hello</b>'
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                throw(new InternalServerError);
+                throw(error);
             } else {
                 console.log(info);
             }
@@ -109,6 +81,27 @@ class Notification{
     emails(name){
         return this.subscriptions.filter(sub => sub.nameArtist === name).map(sub => sub.email).join();
     }
+
+// Busca el artista por nombre y devuelve el id 
+/*
+    getArtistId(name){
+        let idArtist;
+        const options = {
+            url: 'http://localhost:5000/api/artists/' + name,
+            method: 'GET',
+            json: true
+        };
+        rp(options).then((res) => idArtist = res.id);
+        
+        return idArtist;
+    }
+
+    subscriptors(idArtist){
+        let artistName = getArtistName(idArtista);
+        let suscripciones = this.subscriptions.filter(sub => sub.nameArtist === artistName);
+        return suscripciones.map(sub => sub.email).join();
+    }
+*/
 
 //----------------------------------------------------
   
