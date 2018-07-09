@@ -69,7 +69,7 @@ class Notification{
 
         const mailOptions = {
             from: from,
-            to: this.emails(name),
+            to: this.emails(name).join(),
             subject: subject , 
             text: message,
             html: '<b>Hello</b>'
