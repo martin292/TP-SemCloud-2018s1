@@ -28,6 +28,7 @@ bower_components
 
 # ignore a single file
 estado
+Notificaciones
 test.json
 
 # node-waf configuration
