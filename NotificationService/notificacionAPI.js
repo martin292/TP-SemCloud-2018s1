@@ -42,8 +42,8 @@ function errorHandler(err, req, res, next) {
         res.status(err.status);
         res.json({status: err.status, errorCode: 'BAD_REQUEST'}); 
     } else {
-        res.status(err.status);
-        res.json({status: 500, errorCode: 'INTERNAL_SERVER_ERROR'}); 
+        //res.status(err.status);
+        //res.json({status: 500, errorCode: 'INTERNAL_SERVER_ERROR'}); 
         next(err); 
     } 
 }
@@ -66,12 +66,12 @@ router.post('/suscribe', (req, res) => {
     try{
         checkValidJson(req.body);
         notificacion.getArtistName(parseInt(req.body.artistId))
-        .then((name) => {
+        .then((name,) => {
             notificacion.addSubscription(name, req.body.email);
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        });        
+        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});     
     } catch (e){
         throwError(res, e);
     }
@@ -98,7 +98,7 @@ router.post('/unsuscribe', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        });        
+        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});    
     } catch (e) {
         throwError(res, e); 
     }
@@ -115,7 +115,7 @@ router.post('/notify', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        });
+        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});
     } catch (e){
         throwError(res, e); 
     }
@@ -146,7 +146,7 @@ router.get('/subscriptions', (req, res) => {
                 "subscriptors": notificacion.emails(name)
             });
             res.end();
-        });        
+        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});       
     }catch(e){
         throwError(res, e);
     }
@@ -168,7 +168,7 @@ router.delete('/subscriptions', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        });        
+        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});      
     } catch (e){
         throwError(res, e);
     }

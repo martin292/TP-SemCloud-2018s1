@@ -1,6 +1,7 @@
 const picklejs = require('picklejs');
 const nodemailer = require('nodemailer');
 const rp = require('request-promise');
+//let errors = require('./errors');
 const urlUNQfyAPI = 'http://localhost:5000/api';//Localhost
 //const urlUNQfyAPI = 'http://172.20.0.21:5000/api';//Docker
 
@@ -30,15 +31,19 @@ class Notification{
         };
 
         return rp(options)
-            .then((res) => { return res.name; })
-            .catch((e) => { throw e; });
+            .then((res) => { return res.name; });
+            //.catch((e) => { throw e; });
     }
 
     addSubscription(name, email){
         let sub = new Subscription(name, email);
-        if(!this.subscriptions.includes(sub)){
+        if(!this.exists(sub)){
             this.subscriptions.push(sub);
         }
+    }
+
+    exists(sub){
+        return this.subscriptions.find((s) => s.artistName === sub.artistName && s.email === sub.email) !== undefined;
     }
 
     removeSubscription(name, email){
@@ -57,7 +62,7 @@ class Notification{
             port: 587,
             secure: false,
             auth: {
-                user: 'tu.email@gmail.com',
+                user: 'email@gmail.com',
                 pass: 'pass',
             },
         });
