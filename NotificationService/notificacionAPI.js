@@ -62,7 +62,7 @@ router.use((req, res, next) => {
 });
 
 // POST /api/subscribe
-router.post('/suscribe', (req, res) => {
+router.post('/subscribe', (req, res) => {
     try{
         checkValidJson(req.body);
         notificacion.getArtistName(parseInt(req.body.artistId))
@@ -89,7 +89,7 @@ function hasEmailAndArtistID(body){
 
 
 // POST /api/unsubscribe
-router.post('/unsuscribe', (req, res) => {
+router.post('/unsubscribe', (req, res) => {
     try{
         checkValidJson(req.body, res);
         notificacion.getArtistName(req.body.artistId)

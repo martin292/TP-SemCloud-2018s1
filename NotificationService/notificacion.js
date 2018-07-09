@@ -85,7 +85,7 @@ class Notification{
     }
 
     emails(name){
-        return this.subscriptions.filter(sub => sub.nameArtist === name).map(sub => sub.email).join();
+        return this.subscriptions.filter(sub => sub.nameArtist === name).map(sub => sub.email);
     }
 
 // Busca el artista por nombre y devuelve el id 
