@@ -71,7 +71,7 @@ router.post('/subscribe', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});     
+        }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});     
     } catch (e){
         throwError(res, e);
     }
@@ -98,7 +98,7 @@ router.post('/unsubscribe', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});    
+        }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});    
     } catch (e) {
         throwError(res, e); 
     }
@@ -115,7 +115,7 @@ router.post('/notify', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});
+        }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});
     } catch (e){
         throwError(res, e); 
     }
@@ -146,7 +146,7 @@ router.get('/subscriptions', (req, res) => {
                 "subscriptors": notificacion.emails(name)
             });
             res.end();
-        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});       
+        }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});       
     }catch(e){
         throwError(res, e);
     }
@@ -168,7 +168,7 @@ router.delete('/subscriptions', (req, res) => {
             saveNotificacion(notificacion, 'Notificaciones');
             res.status(200);
             res.end();
-        }).catch((e) => { throwError(res, new errors.ResourceNotFound());});      
+        }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});      
     } catch (e){
         throwError(res, e);
     }
