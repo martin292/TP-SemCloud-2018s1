@@ -1,7 +1,8 @@
 const picklejs = require('picklejs');
 const nodemailer = require('nodemailer');
 const rp = require('request-promise');
-//const errors = require('./errors');
+const urlUNQfyAPI = 'http://localhost:5000/api';//Localhost
+//const urlUNQfyAPI = 'http://172.20.0.21:5000/api';//Docker
 
 //---------------------------------------------------
 
@@ -23,7 +24,7 @@ class Notification{
 
     getArtistName(id) {
         const options = {
-            url: 'http://localhost:5000/api/artists/' + id,
+            url: urlUNQfyAPI + '/artists/' + id,
             method: 'GET',
             json: true
         };

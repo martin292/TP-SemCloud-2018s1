@@ -1,13 +1,15 @@
 
 const picklejs = require('picklejs');
 const rp = require('request-promise');
+const urlNotifyAPI = 'http://localhost:5001/api';//Localhost
+//const urlNotifyAPI = 'http://172.20.0.22:5001/api';//Docker
 
 //---------------------------------------
 
 class Observer{
   notify(id, name, subject, message){
     const options = {
-      url: 'http://localhost:5001/api/notify',
+      url: urlNotifyAPI + '/notify',
       method: 'POST',
       body: {
         artistId: id,
