@@ -5,15 +5,15 @@ const rp = require('request-promise');
 //---------------------------------------
 
 class Observer{
-  notify(id, name){
+  notify(id, name, subject, message){
     const options = {
       url: 'http://localhost:5001/api/notify',
       method: 'POST',
       body: {
         artistId: id,
-        subject:  'Nuevo Album para artista' + name,
-        message:  'Se ha agregado un album al artista' + name,
-        from:     'UNQfy <UNQfy.notifications@gmail.com>'
+        subject:  subject + name,
+        message:  message + name,
+        from:     'UNQfy.notifications@gmail.com'
       },
       json: true
     };
@@ -36,6 +36,7 @@ class Artist{
 
   deleteAlbum(id){
     this.albums = this.albums.filter(album => album.id !== id);
+    this.observer.notify(this.id, this.name, 'Album eliminado para artista ', 'Se ha eliminado un album al artista ');
   }
   
   getTracksMatchingGenres(genres){
@@ -43,7 +44,7 @@ class Artist{
     return this.albums.reduce(reducer, []);
   }
 
-  update(){this.observer.notify(this.id, this.name);}
+  update(){this.observer.notify(this.id, this.name, 'Nuevo Album para artista ', 'Se ha agregado un album al artista ');}
 
   print(){
     console.log(' ');

@@ -49,7 +49,7 @@ function errorHandler(err, req, res, next) {
 }
 
 function throwError(res, e) {
-    res.status(e.status).json({ status: e.status, errorCode: e.errorCode });//.send(e);
+    res.status(e.status).json({ status: e.status, errorCode: e.errorCode });
 }
 
 //------------------------------------------------------------------

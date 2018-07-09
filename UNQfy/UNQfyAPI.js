@@ -160,7 +160,7 @@ function jsonIsValidForAlbums(json){
 }
 
 function tryPostAlbum(req, res){
-    let artist = unqfy.getArtistById(req.body.artistId);
+    let artist = unqfy.getArtistById(parseInt(req.body.artistId));
     if (artist === undefined) {
         res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" });
     } else {

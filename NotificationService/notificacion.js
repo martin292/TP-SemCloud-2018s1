@@ -71,7 +71,7 @@ class Notification{
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                throw(error);
+                console.log(error);
             } else {
                 console.log(info);
             }
