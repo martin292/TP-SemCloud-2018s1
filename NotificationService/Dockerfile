@@ -7,9 +7,9 @@ ENV NODE_ENV=development
 ENV DEBUG=true
 
 # Crea un directorio y nos movemos ahí
-WORKDIR /home/node/my_node_app
+WORKDIR /home/node/notify
 
-# Copia el package.json package-lock.json en /home/node/my_node_app
+# Copia el package.json package-lock.json en /home/node/notify
 COPY package.json .
 COPY package-lock.json .
 
@@ -24,13 +24,13 @@ RUN ["npm", "install"]
 EXPOSE 5001
 
 # Copia los fuentes dentro del container
-COPY notificacion.js /home/node/my_node_app/
-COPY notificacionAPI.js /home/node/my_node_app/
-COPY errors.js /home/node/my_node_app/
+COPY notificacion.js /home/node/notify/
+COPY notificacionAPI.js /home/node/notify/
+COPY errors.js /home/node/notify/
 
-# Le da permisos al usuario node para escribir en /home/node/my_node_app
+# Le da permisos al usuario node para escribir en /home/node/notify
 # Como comentario, notar que el comando RUN nos permite ejecutar culquier comando bash valido.
-RUN chown node:users /home/node/
+RUN chown node:users /home/node/notify
 
 # Habilita el usuario node. Por defecto, los containers corren los comandos con el usuario root
 USER node

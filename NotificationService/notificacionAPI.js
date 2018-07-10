@@ -117,7 +117,7 @@ router.post('/notify', (req, res) => {
             res.end();
         }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});
     } catch (e){
-        throwError(res, new InternalServerError()); 
+        throwError(res, e); 
     }
 });
 

@@ -7,9 +7,9 @@ ENV NODE_ENV=development
 ENV DEBUG=true
 
 # Crea un directorio y nos movemos ahí
-WORKDIR /home/node/my_node_app
+WORKDIR /home/node/unqfy
 
-# Copia el package.json package-lock.json en /home/node/my_node_app
+# Copia el package.json package-lock.json en /home/node/unqfy
 COPY package.json .
 COPY package-lock.json .
 
@@ -23,12 +23,12 @@ RUN ["npm", "install"]
 EXPOSE 5000
 
 # Copia los fuentes dentro del container
-COPY unqfy.js /home/node/my_node_app/
-COPY UNQfyAPI.js /home/node/my_node_app/
+COPY unqfy.js /home/node/unqfy/
+COPY UNQfyAPI.js /home/node/unqfy/
 
-# Le da permisos al usuario node para escribir en /home/node/my_node_app
+# Le da permisos al usuario node para escribir en /home/node/unqfy
 # Como comentario, notar que el comando RUN nos permite ejecutar culquier comando bash valido.
-RUN chown node:users /home/node/
+RUN chown node:users /home/node/unqfy
 
 # Habilita el usuario node. Por defecto, los containers corren los comandos con el usuario root
 USER node
