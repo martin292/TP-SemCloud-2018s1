@@ -8,6 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Iniciar programa",
+            //"program": "${workspaceFolder}/UNQfy/unqfy.js"
             //"program": "${workspaceFolder}/UNQfy/UNQfyAPI.js"
             "program": "${workspaceFolder}/NotificationService/notificacionAPI.js"
         }

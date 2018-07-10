@@ -36,14 +36,18 @@ class Notification{
     }
 
     addSubscription(name, email){
-        let sub = new Subscription(name, email);
-        if(!this.exists(sub)){
+        if(!this.exists(name, email)){
+            let sub = new Subscription(name, email);
             this.subscriptions.push(sub);
         }
     }
 
-    exists(sub){
-        return this.subscriptions.find((s) => s.artistName === sub.artistName && s.email === sub.email) !== undefined;
+    exists(name, email){
+        return this.subscriptions.some((s) => s.compare(name, email));
+    }
+
+    containSubscriptionFor(name){
+        return this.subscriptions.some((s) => s.nameArtist === name);
     }
 
     removeSubscription(name, email){

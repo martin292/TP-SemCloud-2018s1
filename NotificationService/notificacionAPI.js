@@ -111,8 +111,9 @@ router.post('/notify', (req, res) => {
         checkJson(req.body);
         notificacion.getArtistName(req.body.artistId)
         .then((name) => {
-            notificacion.notify(name, req.body.from, req.body.message, req.body.subject);
-            saveNotificacion(notificacion, 'Notificaciones');
+            if(notificacion.containSubscriptionFor(name)){
+                notificacion.notify(name, req.body.from, req.body.message, req.body.subject);
+            }
             res.status(200);
             res.end();
         }).catch((e) => { throwError(res, new errors.RelatedResourceNotFound());});

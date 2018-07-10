@@ -183,18 +183,21 @@ class UNQfy {
     this.idTrack = 1;
   }
   
-  populateAlbumsForArtist( artistName){
+  populateAlbumsForArtist(artistName) {
     const options = {
       url: 'https://api.spotify.com/v1/search?q=' + artistName + '&type=artist',
-      headers: { Authorization: 'Bearer BQCs07CIBqTHU4Xsood58jN-dBcjPX4BO6ju4yKo-2jCLwwe92NYoa6dY_xJyu7D2JbtFdH77HF0s0C9yMkZOiKwr7udOnYg5uWkgoD4erHlqQwB7tZKP7bPXGSMLtAUjtyZZtKDZg7O_cFU8IoPTeIMTH-nK5KNlKc4A1s4-ptofVwDZu3fSQ'},
+      headers: { Authorization: 'Bearer BQBi5J0rIALQINqqRTgh2S-P-6ZJOmd8jDgElUfuhFewjbzXLLwHLIO012C2qjFu3P4nHKcpKEWyJtCXNk1qlcw0sibLUWxy9zREAvmGEsbPCUIm1-pYjmb3Ud86Dupdg6t5ZGlcNOHAFmi76kj-7-62RoaFgr9dviuNypyczzPDS7cFvjVDwQ' },
       json: true
     };
-    
+
+    if (this.getArtistByName(artistName) === undefined) {
+      this.addArtist({ name: artistName, country: 'country' });
+    }
+
     rp.get(options).then((res) => {
-      this.addArtist({name: artistName, country: 'country'});
       let artist = this.findArtist(res, artistName);
-      this.getAlbums(artist).then((a) => this.addAlbums(a, artistName));
-      artist.update();
+      this.getAlbums(artist)
+        .then((a) => this.addAlbums(a, artistName));
     });
   }
 
@@ -209,7 +212,7 @@ class UNQfy {
   getAlbums(artist){
     const options = {
       url: 'https://api.spotify.com/v1/artists/' + artist.id +'/albums',
-      headers: { Authorization: 'Bearer BQCs07CIBqTHU4Xsood58jN-dBcjPX4BO6ju4yKo-2jCLwwe92NYoa6dY_xJyu7D2JbtFdH77HF0s0C9yMkZOiKwr7udOnYg5uWkgoD4erHlqQwB7tZKP7bPXGSMLtAUjtyZZtKDZg7O_cFU8IoPTeIMTH-nK5KNlKc4A1s4-ptofVwDZu3fSQ'},
+      headers: { Authorization: 'Bearer BQBi5J0rIALQINqqRTgh2S-P-6ZJOmd8jDgElUfuhFewjbzXLLwHLIO012C2qjFu3P4nHKcpKEWyJtCXNk1qlcw0sibLUWxy9zREAvmGEsbPCUIm1-pYjmb3Ud86Dupdg6t5ZGlcNOHAFmi76kj-7-62RoaFgr9dviuNypyczzPDS7cFvjVDwQ'},
       json: true
     };
     
@@ -375,12 +378,20 @@ module.exports = {
 };
 
 
+
 //Test Spotify
-/*
-let unq = new UNQfy();
-unq.populateAlbumsForArtist('Queen');
-setTimeout(function(){console.log(unq.artists.find(a => a.name === 'Queen').albums)}, 2000);
-*/
+
+//let unq = new UNQfy();
+//unq.populateAlbumsForArtist("Queen");
+//unq.populateAlbumsForArtist("Guns N\' Roses");
+//unq.populateAlbumsForArtist("U2");
+//unq.populateAlbumsForArtist("La Renga");
+
+//setTimeout(function(){console.log(unq.artists.find(a => a.name === "Queen").albums)}, 2000);
+//setTimeout(function(){console.log(unq.artists.find(a => a.name === "Guns N\' Roses").albums)}, 2000);
+//setTimeout(function(){console.log(unq.artists.find(a => a.name === "U2").albums)}, 2000);
+//setTimeout(function(){console.log(unq.artists.find(a => a.name === "La Renga").albums)}, 2000);
+
 
 //Test MusixMatch
 /*
@@ -389,4 +400,25 @@ let album = new Album('The works', 0, artist);
 let track = new Track('I want to break free', 0, 'rock', album);
 
 track.getLyrics();
+*/
+/*
+let artist = new Artist('Los Piojos', 'arg');
+let album = new Album('Azul', 0, artist);
+let track = new Track('Agua', 0, 'rock', album);
+
+track.getLyrics();
+*/
+
+/*
+let artist = new Artist('The Beatles', 'england');
+let album = new Album('Abbey Road', 0, artist);
+let track = new Track('Come Together', 0, 'rock', album);
+
+track.getLyrics();
+*/
+
+/*
+Credenciales guardadas en spotifyCreds.json.
+access_token:  BQBi5J0rIALQINqqRTgh2S-P-6ZJOmd8jDgElUfuhFewjbzXLLwHLIO012C2qjFu3P4nHKcpKEWyJtCXNk1qlcw0sibLUWxy9zREAvmGEsbPCUIm1-pYjmb3Ud86Dupdg6t5ZGlcNOHAFmi76kj-7-62RoaFgr9dviuNypyczzPDS7cFvjVDwQ
+refresh_token:  AQDHejcTkqiXffzpUFiUndxqPvl09BA5_BMutddJ1V-wMG3EMb56LS99iV8Bpl4FrRxO-kSdgLNgtY6I-95Bv8qgvmvOvY4dzlBApRdJOgPDYzWU_MldK65Pzes6UTawzuk
 */
